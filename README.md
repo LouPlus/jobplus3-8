@@ -5,7 +5,6 @@ LouPlus Team 8 https://www.shiyanlou.com/louplus/python
 
 * [食指1968](https://github.com/tongxindao)
 
-* [shiyanlou_echo](https://github.com/echo-ray)
-
 * [uucloud](https://github.com/uucloud)
 
+* [shiyanlou_echo](https://github.com/echo-ray)
