@@ -88,10 +88,8 @@ class Job(Base):
     name = db.Column(db.String(64), nullable=False, index=True)
     salary = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(64), nullable=False)
-    # 职位要求    
-    requirement = db.Column(db.String(128))
-    # 职位描述
     description = db.Column(db.Text)
+    requirement = db.Column(db.String(128))
 
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False, backref='jobs')
