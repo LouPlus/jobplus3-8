@@ -1,0 +1,20 @@
+[
+{"salary": "5k-10k", "company": "\u827a\u753b\u5f00\u5929", "name": "\u52a8\u753b\u5e08", "address": "\u6b66\u6c49\u5e02"},
+{"salary": "10k-20k", "company": "\u5317\u4eac\u9ea6\u7530", "name": "\u623f\u5730\u4ea7\u4e3b\u7ba1", "address": "\u5317\u4eac"},
+{"salary": "15k-25k", "company": "\u864e\u7279\u4fe1\u606f\u5317\u4eac\u529e\u4e8b\u5904", "name": "\u9ad8\u7ea7\u524d\u7aef/\u5168\u6808\u5de5\u7a0b\u5e08", "address": "\u5317\u4eac"},
+{"salary": "15k-20k", "company": "SIA\u56fd\u9645\u827a\u672f\u6559\u80b2", "name": "\u827a\u672f\u7559\u5b66\u54a8\u8be2\u987e\u95ee", "address": "\u5317\u4eac"},
+{"salary": "8k-15k", "company": "\u676d\u5dde\u56e0\u777f", "name": "\u533a\u57df\u5546\u52a1\u62d3\u5c55", "address": "\u676d\u5dde"},
+{"salary": "8k-16k", "company": "\u5c27\u56fe\u79d1\u6280", "name": "Android\u5f00\u53d1\u5de5\u7a0b\u5e08", "address": "\u676d\u5dde"},
+{"salary": "15k-20k", "company": "\u5929\u620f\u4e92\u5a31", "name": "\u7f8e\u672f\u8bbe\u8ba1\u5e08\uff083D\u573a\u666f\uff09", "address": "\u4e0a\u6d77"},
+{"salary": "8k-15k", "company": "TYRIA", "name": "PHP\u5f00\u53d1\u5de5\u7a0b\u5e08", "address": "\u6210\u90fd"},
+{"salary": "8k-10k", "company": "\u8da3\u4eab\u91d1\u878d", "name": "\u8d22\u52a1\u7ecf\u7406", "address": "\u5317\u4eac"},
+{"salary": "6k-10k", "company": "\u5e0c\u60a6", "name": "\u5ba2\u6237\u8fd0\u8425\u4e3b\u7ba1", "address": "\u5317\u4eac"},
+{"salary": "10k-15k", "company": "\u5e0c\u60a6", "name": "\u5ba2\u6237\u8fd0\u8425\u7ecf\u7406", "address": "\u5317\u4eac"},
+{"salary": "5k-7k", "company": "\u5929\u534e\u4f20\u5a92", "name": "\u5305\u88c5\u5236\u4f5c", "address": "\u6df1\u5733"},
+{"salary": "3k-6k", "company": "\u5e7f\u5dde\u6960\u5929", "name": "\u7cfb\u7edf\u6280\u672f\u652f\u6301", "address": "\u5e7f\u5dde"},
+{"salary": "3K-6K", "company": "\u798f\u5efa\u7701\u5929\u5f8b\u6559\u80b2\u54a8\u8be2\u6709\u9650\u516c\u53f8", "name": "\u5e02\u573a\u4e13\u5458/\u8425\u9500\u4e13\u5458", "address": "\u798f\u5dde"},
+{"salary": "15k-20k", "company": "DataStory", "name": "\u5927\u6570\u636e\u5f00\u53d1\u5de5\u7a0b\u5e08", "address": "\u5e7f\u5dde"},
+{"salary": "14k-18k", "company": "\u98de\u5e38\u51c6", "name": "\u9ad8\u7ea7Web\u524d\u7aef\u5de5\u7a0b\u5e08", "address": "\u5408\u80a5"},
+{"salary": "15k-25k", "company": "\u65b0\u4e1c\u65b9\u6559\u80b2\u884c\u4e1a\u7814\u7a76\u9662", "name": "TP/LCD\u5668\u4ef6\u5de5\u7a0b\u5e08", "address": "\u5317\u4eac"},
+{"salary": "6k-10k", "company": "\u597d\u54c1\u6c47", "name": "\u5929\u732b\u5e97\u957f", "address": "\u5e7f\u5dde"}
+]
