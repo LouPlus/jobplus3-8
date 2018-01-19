@@ -2,6 +2,7 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import url_for
 
 db = SQLAlchemy()
 
@@ -15,7 +16,7 @@ class Base(db.Model):
     __abstract__ = True
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, 
+    updated_at = db.Column(db.DateTime,
                         default=datetime.utcnow,
                         onupdate=datetime.utcnow)
 
@@ -71,22 +72,33 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True, index=True)
+    _password = db.Column('password', db.String(128), nullable=False)
     website = db.Column(db.String(64), nullable=False)
     address = db.Column(db.String(64), nullable=False)
-    logo = db.Column(db.String(64), nullable=False)
+    logo = db.Column(db.String(64))
     description = db.Column(db.String(128))
     company_info = db.Column(db.Text)
-    
+
     def __repr__(self):
         return '<Company: {}'.format(self.name)
 
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, orig_password):
+        self._password = generate_password_hash(orig_password)
+
+    def check_password(self, password):
+        return check_password_hash(self._password, password)
 
 class Job(Base):
     __tablename__ = 'job'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, index=True)
-    salary = db.Column(db.Integer, nullable=False)
+    salary = db.Column(db.String(64), nullable=False)
     address = db.Column(db.String(64), nullable=False)
     description = db.Column(db.Text)
     requirement = db.Column(db.String(128))
