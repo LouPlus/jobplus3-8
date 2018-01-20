@@ -25,7 +25,7 @@ class Base(db.Model):
                         onupdate=datetime.utcnow)
 
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = 'user'
 
     ROLE_JOBHUNTER = 10
