@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import url_for
+from flask_login import UserMixin
+
 
 db = SQLAlchemy()
 
@@ -12,6 +15,7 @@ jobhunter_job = db.Table(
     db.Column('job_id', db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'))
 )
 
+
 class Base(db.Model):
     __abstract__ = True
 
@@ -19,6 +23,7 @@ class Base(db.Model):
     updated_at = db.Column(db.DateTime,
                         default=datetime.utcnow,
                         onupdate=datetime.utcnow)
+
 
 class User(Base):
     __tablename__ = 'user'
@@ -93,6 +98,7 @@ class Company(Base):
     def check_password(self, password):
         return check_password_hash(self._password, password)
 
+
 class Job(Base):
     __tablename__ = 'job'
 
@@ -108,4 +114,3 @@ class Job(Base):
 
     def __repr__(self):
         return '<Job: {}'.format(self.name)
-
