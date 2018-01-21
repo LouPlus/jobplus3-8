@@ -21,7 +21,7 @@ def profile():
     if not current_user.is_company:
         flash("您没有权限访问", "warning")
         return redirect(url_for("front.index"))
-    form = CompanyProfileForm(obj=current_user.company_detail)
+    form = CompanyProfileForm(obj=current_user)
     if form.validate_on_submit():
         form.update_profile(current_user)
         flash("企业信息更新成功", "success")
