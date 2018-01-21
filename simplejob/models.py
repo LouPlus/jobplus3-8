@@ -35,6 +35,8 @@ class User(Base, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, index=True, nullable=False)
     _password = db.Column('password', db.String(128), nullable=False)
+    phone = db.Column(db.String(18), unique=True, index=True, nullable=False)
+    job_years = db.Column(db.String(2), nullable=False)
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_JOBHUNTER)
     job_intention = db.relationship('Job',

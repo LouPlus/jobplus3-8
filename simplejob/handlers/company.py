@@ -14,6 +14,6 @@ from simplejob.decorators import company_required
 company = Blueprint("company", __name__, url_prefix="/company")
 
 
-@company.route("/info")
-def info():
+@company.route("/admin/profile")
+def profile():
     return render_template("index.html")
