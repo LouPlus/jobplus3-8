@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
+import re
+
 from flask_wtf import FlaskForm
 
 from wtforms import StringField
 from wtforms import PasswordField
 from wtforms import BooleanField
+from wtforms import TextAreaField
 from wtforms import SubmitField
 from wtforms import ValidationError
 
 from wtforms.validators import Length
+from wtforms.validators import Regexp
 from wtforms.validators import Email
 from wtforms.validators import DataRequired as Required
 
@@ -48,7 +52,8 @@ class UserProfileForm(FlaskForm):
                 message="密码长度要在6～24个字符之间")])
     phone_num = StringField("手机号",
             validators=[Required(message="请填写内容"), Length(11, 11,
-                message="请确认您输入的手机号")])       
+                message="请确认您输入的手机号"),
+                Regexp("1[3458]\\d{9}", flags=re.I, message="请输入正确的手机号")])       
     job_years = StringField("工作年限",
             validators=[Required(message="请填写内容"), Length(1, 2,
                 message="请确认您输入的工作年限")])       
@@ -59,4 +64,37 @@ class UserProfileForm(FlaskForm):
     def update_profile(self, user):
         self.populate_obj(user)
         db.session.add(user)
+        db.session.commit()
+
+
+class CompanyProfileForm(FlaskForm):
+    name = StringField("企业名称",
+            validators=[Required(message="请填写内容"), Length(3, 24, 
+                message="密码长度要在3～24个字符之间")])
+    email = StringField("企业邮箱",
+            validators=[Required(message="请填写内容"),
+                Email(message="请输入合法的email地址")])
+    password = PasswordField("密码",
+            validators=[Required(message="请填写内容"), Length(6, 24, 
+                message="密码长度要在6～24个字符之间")])
+    address = StringField("办公地址",
+            validators=[Required(message="请填写内容"), Length(6, 128,
+                message="密码长度要在6～128个字符之间")])       
+    logo_url = StringField("公司Logo",
+            validators=[Required(message="请填写内容"), Length(1, 128,
+                message="请确认您输入的Logo")])       
+    website = StringField("公司网址",
+            validators=[Required(message="请填写内容"), Length(12, 128,
+                message="请确认您输入的网址")])
+    summary = StringField("公司简介",
+            validators=[Required(message="请填写内容"), Length(12, 128,
+                message="请确认您输入的内容")])
+    description = TextAreaField("公司详情",
+            validators=[Required(message="请填写内容"), Length(12, 1024,
+                message="请确认您输入的内容")])
+    submit = SubmitField("提交")
+
+    def update_profile(self, company):
+        self.populate_obj(company)
+        db.session.add(company)
         db.session.commit()

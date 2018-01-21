@@ -42,6 +42,7 @@ class User(Base, UserMixin):
     job_intention = db.relationship('Job',
                                 secondary=jobhunter_job,
                                 backref='users')
+    detail = db.relationship("Company", uselist=False)
     # 该处是否可以使用外键
     company_id = db.Column(db.Integer)
     # 暂时先用简历地址代替简历存储
@@ -79,11 +80,15 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True, index=True)
+    email = db.Column(db.String(64), unique=True, index=True, nullable=True)
     _password = db.Column('password', db.String(128), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"))
+    user = db.relationship("User", uselist=False, backref=db.backref("company_detail", uselist=False))
     website = db.Column(db.String(64), nullable=False)
     address = db.Column(db.String(64), nullable=False)
     logo = db.Column(db.String(64))
-    description = db.Column(db.String(128))
+    summary = db.Column(db.String(128))
+    description = db.Column(db.String(1024))
     company_info = db.Column(db.Text)
 
     def __repr__(self):
