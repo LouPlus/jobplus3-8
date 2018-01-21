@@ -24,8 +24,14 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         login_user(user)
-        return redirect(url_for(".index"))
-    flash("邮箱或密码错误，请重试", "error")
+        next = ".index"
+        if user.is_admin:
+            next = "admin.manage"
+        elif user.is_company:
+            next = "company.info"
+        elif user.is_jobhunter:
+            next = "job.info"
+        return redirect(url_for(next))
     return render_template("login.html", form=form)
 
 

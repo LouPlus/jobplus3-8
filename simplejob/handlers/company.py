@@ -13,3 +13,7 @@ from simplejob.decorators import company_required
 
 company = Blueprint("company", __name__, url_prefix="/company")
 
+
+@company.route("/info")
+def info():
+    return render_template("index.html")
