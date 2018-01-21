@@ -6,11 +6,12 @@ from simplejob.config import configs
 from simplejob.models import db, User, Company, Job
 
 def register_blueprints(app):
-    from .handlers import front, job, company, admin # , user, tests
+    from .handlers import front, job, company, admin, user #, tests
     app.register_blueprint(front)
     app.register_blueprint(job)
     app.register_blueprint(company)
     app.register_blueprint(admin)
+    app.register_blueprint(user)
 
 def create_app(config):
     app = Flask(__name__)

@@ -23,14 +23,14 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        login_user(user)
+        login_user(user, form.remember_me.data)
         next = ".index"
         if user.is_admin:
             next = "admin.manage"
         elif user.is_company:
-            next = "company.info"
+            next = "company.profile"
         elif user.is_jobhunter:
-            next = "job.info"
+            next = "user.profile"
         return redirect(url_for(next))
     return render_template("login.html", form=form)
 

@@ -1,8 +1,8 @@
-"""empty message
+"""add phone and job_years item for User class
 
-Revision ID: 4068daba0eee
+Revision ID: db733a122cdc
 Revises: 
-Create Date: 2018-01-21 13:38:29.958360
+Create Date: 2018-01-21 16:28:22.817017
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4068daba0eee'
+revision = 'db733a122cdc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,6 +38,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=32), nullable=False),
     sa.Column('password', sa.String(length=128), nullable=False),
+    sa.Column('phone', sa.String(length=18), nullable=False),
+    sa.Column('job_years', sa.String(length=2), nullable=False),
     sa.Column('email', sa.String(length=64), nullable=False),
     sa.Column('role', sa.SmallInteger(), nullable=True),
     sa.Column('company_id', sa.Integer(), nullable=True),
@@ -45,6 +47,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
+    op.create_index(op.f('ix_user_phone'), 'user', ['phone'], unique=True)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
     op.create_table('job',
     sa.Column('created_at', sa.DateTime(), nullable=True),
@@ -76,6 +79,7 @@ def downgrade():
     op.drop_index(op.f('ix_job_name'), table_name='job')
     op.drop_table('job')
     op.drop_index(op.f('ix_user_username'), table_name='user')
+    op.drop_index(op.f('ix_user_phone'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')
     op.drop_index(op.f('ix_company_name'), table_name='company')
