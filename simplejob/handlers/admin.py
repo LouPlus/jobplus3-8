@@ -65,19 +65,21 @@ def edit_user(user_id):
 def disable_user(user_id):
     user = User.query.get_or_404(user_id)
     if user.is_enable:
-       user.is_enable = True
-       flash("已启用", "success")
-    else:
        user.is_enable = False
        flash("已禁用", "success")
+    else:
+       user.is_enable = True
+       flash("已启用", "success")
     db.session.add(user)
     db.session.commit()
     return redirect(url_for("admin.users"))
+
 
 @admin.route("/users/addcompany", methods=["GET", "POST"])
 @admin_required
 def addcompany():
     form = RegisterForm()
+    form.name.label = u"企业名称"
     if form.validate_on_submit():
         form.create_user()
         flash("企业创建成功", "success")

@@ -45,7 +45,7 @@
                 编辑
             </a>
             <a href="{{ url_for('admin.disable_user', user_id=user.id) }}" type="button" class="btn btn-default">
-                {% if is_enable %}启用{% else %}禁用{% endif %}
+                {% if user.is_enable %}禁用{% else %}启用{% endif %}
             </a>
           </div>
         </td>
