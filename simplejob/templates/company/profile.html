@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_form %}
+
+{% block body %}
+<h4>编辑用户</h4>
+{{ render_form(form, url_for('company.profile')) }}
+{% endblock %}
