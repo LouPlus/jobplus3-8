@@ -121,3 +121,7 @@ class Job(Base):
 
     def __repr__(self):
         return '<Job: {}'.format(self.name)
+
+    @property
+    def url(self):
+        return url_for('job.detail', course_id = self.id)
