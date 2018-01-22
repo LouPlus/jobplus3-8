@@ -77,6 +77,7 @@ def index():
     return render_template('index.html', pagination = pagination,
             current_time = datetime.utcnow())
 
+
 @front.route("/logout")
 @login_required
 def logout():
