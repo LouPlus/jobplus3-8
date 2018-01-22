@@ -12,6 +12,7 @@ from simplejob.models import Job
 from simplejob.forms import LoginForm
 from simplejob.forms import RegisterForm
 
+from datetime import datetime
 
 front = Blueprint("front", __name__)
 
@@ -73,7 +74,8 @@ def index():
             per_page = current_app.config['INDEX_PER_PAGE'],
             error_out = False
             )
-    return render_template('index.html', pagination = pagination)
+    return render_template('index.html', pagination = pagination,
+            current_time = datetime.utcnow())
 
 @front.route("/logout")
 @login_required

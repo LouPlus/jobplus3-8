@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 
 from simplejob.config import configs
 from simplejob.models import db, User, Company, Job
+from flask_moment import Moment
 
 def register_blueprints(app):
     from .handlers import front, job, company, admin, user #, tests
@@ -15,6 +16,7 @@ def register_blueprints(app):
 
 def create_app(config):
     app = Flask(__name__)
+    moment = Moment(app)
     app.config.from_object(configs.get(config))
     register_blueprints(app)
     register_extensions(app)

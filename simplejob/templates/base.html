@@ -4,6 +4,9 @@
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
         {% block head_css %}
+        {{ moment.include_jquery() }}
+        {{ moment.include_moment() }}
+        {{ moment.lang('zh-CN')}}
         <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://www.lgstatic.com/www/static/pkg/search-result/page/index/main.html_aio_2_3c98000.css">
         <link rel="stylesheet" href="https://www.lgstatic.com/www/static/pkg/widgets_4e04063.css">
