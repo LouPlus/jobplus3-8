@@ -4,7 +4,7 @@ import os
 
 class BaseConfig(object):
     SECRET_KEY = str(os.urandom(24))
-
+    INDEX_PER_PAGE = 10
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
