@@ -12,12 +12,49 @@ from wtforms import SubmitField
 from wtforms import ValidationError
 
 from wtforms.validators import Length
+from wtforms.validators import EqualTo
 from wtforms.validators import Regexp
 from wtforms.validators import Email
 from wtforms.validators import DataRequired as Required
 
 from simplejob.models import db
 from simplejob.models import User
+from simplejob.models import Company
+
+
+class RegisterForm(FlaskForm):
+    username = StringField("用户名",
+            validators=[Required(message="请填写内容"), Length(3, 24,
+                message="密码长度要在3～24个字符之间")])
+    email = StringField("邮箱",
+            validators=[Required(message="请填写内容"),
+                Email(message="请输入合法的email地址")])
+    password = PasswordField("密码",
+            validators=[Required(message="请填写内容"), Length(6, 24,
+                message="密码长度要在6～24个字符之间")])
+    repeat_password = PasswordField("重复密码",
+            validators=[Required(message="请填写内容"), EqualTo("password",
+                message="密码不一致")])
+    submit = SubmitField("提交")
+
+    def create_user(self):
+        user = User()
+        user.username = self.username.data
+        user.email = self.email.data
+        user.password = self.password.data
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+    def validate_username(self, field):
+        if not field.data.isalnum():
+            raise ValidationError("用户名必须由数字和字母组成")
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError("用户名已经存在")
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError("邮箱已经存在")
 
 
 class LoginForm(FlaskForm):
@@ -50,7 +87,7 @@ class UserProfileForm(FlaskForm):
     password = PasswordField("密码",
             validators=[Required(message="请填写内容"), Length(6, 24, 
                 message="密码长度要在6～24个字符之间")])
-    phone_num = StringField("手机号",
+    phone = StringField("手机号",
             validators=[Required(message="请填写内容"), Length(11, 11,
                 message="请确认您输入的手机号"),
                 Regexp("1[3458]\\d{9}", flags=re.I, message="请输入正确的手机号")])       
@@ -75,12 +112,12 @@ class CompanyProfileForm(FlaskForm):
             validators=[Required(message="请填写内容"),
                 Email(message="请输入合法的email地址")])
     password = PasswordField("密码",
-            validators=[Required(message="请填写内容"), Length(6, 24, 
+            validators=[Length(6, 24, 
                 message="密码长度要在6～24个字符之间")])
     address = StringField("办公地址",
             validators=[Required(message="请填写内容"), Length(6, 128,
                 message="密码长度要在6～128个字符之间")])       
-    logo_url = StringField("公司Logo",
+    logo = StringField("公司Logo",
             validators=[Required(message="请填写内容"), Length(1, 128,
                 message="请确认您输入的Logo")])       
     website = StringField("公司网址",
@@ -89,12 +126,19 @@ class CompanyProfileForm(FlaskForm):
     summary = StringField("公司简介",
             validators=[Required(message="请填写内容"), Length(12, 128,
                 message="请确认您输入的内容")])
-    description = TextAreaField("公司详情",
+    company_info = TextAreaField("公司详情",
             validators=[Required(message="请填写内容"), Length(12, 1024,
                 message="请确认您输入的内容")])
     submit = SubmitField("提交")
 
-    def update_profile(self, company):
-        self.populate_obj(company)
-        db.session.add(company)
+    def update_profile(self, user):
+        if user.company_detail:
+            company_detail = user.company_detail
+        else:
+            company_detail = Company()
+            company_detail.user_id = user.id
+        
+        self.populate_obj(company_detail)
+        db.session.add(user)
+        db.session.add(company_detail)
         db.session.commit()
