@@ -16,6 +16,7 @@ user = Blueprint("user", __name__, url_prefix="/user")
 
 
 @user.route("/profile", methods=["GET", "POST"])
+@login_required
 def profile():
     form = UserProfileForm(obj=current_user)
     if form.validate_on_submit():
