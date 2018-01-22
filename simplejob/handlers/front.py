@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from flask import flash
-from flask import Blueprint
-from flask import url_for
-from flask import redirect
-from flask import render_template
+from flask import (flash, Blueprint, url_for,
+        redirect, render_template, request, current_app)
 
-from flask_login import login_user
-from flask_login import logout_user
-from flask_login import login_required
+from flask_login import (login_user, logout_user,
+        login_required)
 
 from simplejob.models import db
 from simplejob.models import User
@@ -69,9 +65,15 @@ def login():
 
 @front.route("/")
 def index():
-    jobs = Job.query.all()
-    return render_template("index.html", jobs = jobs)
-
+    # 获取参数中传过来的页数
+    page = request.args.get('page', default = 1, type = int)
+    # 生成分页对象
+    pagination = Job.query.paginate(
+            page = page,
+            per_page = current_app.config['INDEX_PER_PAGE'],
+            error_out = False
+            )
+    return render_template('index.html', pagination = pagination)
 
 @front.route("/logout")
 @login_required
