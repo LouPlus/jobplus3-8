@@ -4,8 +4,10 @@ import os
 
 class BaseConfig(object):
     SECRET_KEY = str(os.urandom(24))
+    ADMIN_PER_PAGE = 15
     INDEX_PER_PAGE = 10
 
+    
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "mysql+mysqldb://root@localhost:3306/simplejob?charset=utf8"
