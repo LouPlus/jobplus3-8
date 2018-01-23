@@ -79,7 +79,7 @@ def disable_user(user_id):
 @admin_required
 def addcompany():
     form = RegisterForm()
-    form.name.label = u"企业名称"
+    form.username.label = u"企业名称"
     if form.validate_on_submit():
         form.create_user()
         flash("企业创建成功", "success")
