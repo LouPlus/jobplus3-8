@@ -12,6 +12,7 @@ fake = Faker()
 def iter_users():
     yield Company(
             name = '测试账户',
+            email = "test@test.com",
             website = 'www.test.com',
             password = '123456',
             address = 'test'
