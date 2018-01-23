@@ -1,18 +1,37 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint
+from flask import current_app
 from flask import flash
 from flask import url_for
 from flask import render_template
 from flask import redirect
+from flask import render_template
 
 from flask_login import login_required
 from flask_login import current_user
 
+from simplejob.models import User
 from simplejob.forms import CompanyProfileForm
 
 
 company = Blueprint("company", __name__, url_prefix="/company")
+
+
+@company.route("/")
+def index():
+    page = request.args.get('page', default = 1, type = int)
+    pagination = User.query.filter(
+            User.role == User.ROLE_COMPANY
+            ).order_by(User.created_at.desc()
+                ).paginate(
+                    page = page,
+                    per_page = current_app.config['INDEX_PER_PAGE'],
+                    error_out = False
+                    )
+    return render_template('company/index.html', pagination = pagination,
+            active = 'company')
+
 
 
 @company.route("/admin/profile", methods=["GET", "POST"])
