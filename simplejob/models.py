@@ -116,7 +116,10 @@ class Job(Base):
     address = db.Column(db.String(64), nullable=False)
     description = db.Column(db.Text)
     requirement = db.Column(db.String(128))
-
+    # 经验要求
+    exp = db.Column(db.String(64), default="经验不限", nullable=False)
+    # 学历要求
+    degree = db.Column(db.String(64), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False, backref='jobs')
 

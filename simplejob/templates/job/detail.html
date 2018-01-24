@@ -2,3 +2,40 @@
 {% block title %}
 Job - {{ job.name }}
 {% endblock %}
+
+{% block body %}
+<div class="position-head" daa-companyid={{ job.company_id }}>
+    <div class="position-content">
+        <div class="position-content-1">
+            <div class="job-name" title={{ job.name }}>
+                <div class="company">{{ job.company.name }}招聘</div>
+                <span class="name">{{ job.name }}</span>
+            </div>
+            <dd class="job-request">
+                <p>
+                    <span class="salary">{{ job.salary }}</span>
+                    <span>/{{ job.address }} /</span>
+                    <span>{{ job.exp }}</span>
+                </p>
+            </dd>
+        </div>
+        <div class="position-content-r clearfix">
+            <div class="position-deal clearfix">
+                <div class="resume-deliver">
+                    <a class="send-CV-btn s-send-btn fr">投个简历</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container clearfix" id="container">
+        <div class="content_1 fl">
+            <dl class="job_detail" id="job_detail">
+                <dd class="job_bt">
+                    <h3 class="description">职位描述:</h3>
+                    <div>{{ job.description }}</div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock%}
