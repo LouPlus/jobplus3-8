@@ -1,12 +1,34 @@
 {% extends "base.html" %}
-{% from "macros.html" import render_job, render_pagination %}
+{% from "macros.html" import render_pagination %}
 {% block title %}职位列表{% endblock %}
 
 {% block body %}
-<div class="job-list">
-    {% for job in pagination.items %}
-        {{ render_job(job) }}
-    {% endfor%}
+<div class="s_position_list">
+	<h2 class="s_position_list">最新职位</h2>
+	{% for job in pagination.items %}
+	<ul class="item_con_list">
+		<li class="con_list_item default_list">
+			<a href="{{ url_for('job.detail', job_id=job.id) }}" style="max-width: 180px;">
+				{{ job.name }}
+			</a> 
+			<span class="text-muted job-list-item-block-city"> [{{ job.address }}]</span>
+			<div class="p_bot">
+				<strong class="money"> {{ job.salary }} </strong>
+				{{ job.requirement }}
+			</div>
+			<p class="company_name">
+				<a href="#">
+					{{ job.company.name }}
+                		</a> · <span class="format_time">{{ moment(job.created_at).fromNow(refresh=True) }} </span>
+			</p>
+		</li>
+	</ul>
+	{% endfor%}
+	<div class="more">
+		<span>
+			<a href="{{ url_for('front.index') }}">更多最新职位</a>
+		</span>
+	</div>
 </div>
 {{ render_pagination(pagination, 'job.index') }}
 {% endblock %}

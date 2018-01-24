@@ -56,60 +56,29 @@
 {% endmacro %}
 
 
-{% macro render_job(job) %}
-<div class="job-list">
-	<h2 class="h4 mt40 job-list-title">最新职位</h2>
-	<div class="job-list-item row">
-		<div class="col-md-6 job-list-item-block">
-			<a href="{{ url_for('job.detail', job_id=job.id) }}" class="job-name nowrap">
-				{{ job.name }}
-			</a> 
-			<span class="text-muted job-list-item-block-city"> [{{ job.address }}]</span>
-			<div class="text-muted job-require">
-				<strong class="text-green"> {{ job.salary }} </strong>
-				{{ job.requirement }}
-			</div>
-			<p class="text-muted job-list-item-block-company-info">
-				<a href="#">
-					{{ job.company.name }}
-				</a> · {{ moment(job.created_at).fromNow(refresh=True) }}
-			</p>
-		</div>
-	</div>
-	<p class="more">
-		<span>
-			<a href="{{ url_for('front.index') }}">更多最新职位</a>
-		</span>
-	</p>
-</div>
-{% endmacro %}
-
-
 {% macro render_company(company) %}
-<h1 class="h4 mt30 nav-title">企业列表</h1>
-<div class="company-list">
 	<div class="row" style="margin-right: 0;">
 		<div class="media">
 			<div class="col-md-9">
 				<div class="pull-left">
 					<div class="img-warp">
-						<a href="#" class="company-logo" style="background-image: url('{{ company.logo }}')"> </a>
+                        <a href="#" class="company-logo" style="background-image: url('{{ company.detail.logo }}')"> {{ company.detail.name }}</a>
 					</div>
 				</div>
 				<div class="media-body" style="padding-left: 12px;">
 					<h4 class="media-heading" id="media-heading">
 						<a href="#">
-							{{ company.name }}
+							{{ company.detail.name }}
 						</a> 
 						<a class="anchorjs-link" href="#media-heading"> 
 							<span class="anchorjs-icon"></span>
 						</a>
 					</h4>
-					<a class="company-site" target="_blank" rel="nofollow" href="http://{{ company.website }}/"> {{ company.website }} </a>
-					<p class="company-desc">{{ company.description }}</p>
+					<a class="company-site" target="_blank" rel="nofollow" href="http://{{ company.website }}/"> {{ company.detail.website }} </a>
+					<p class="company-desc">{{ company.detail.description }}</p>
 					<ul class="taglist--inline ib">
 						<li class="tagPopup">
-							<a class="tag tag-sm" target="_blank" href="#" data-toggle="popover" data-original-title="#" data-id="1040000000089581"> # </a></li>
+							<a class="tag tag-sm" target="_blank" href="#" data-toggle="popover" data-original-title="#" data-id="">  </a></li>
 					</ul>
 				</div>
 			</div>
@@ -120,10 +89,9 @@
 						<a class="company-list-single-info-num" target="_blank" href="/">
 							<span>#</span> </a> <span>个在招职位</span></li>
 					<li class="text-muted "><i class="fa fa-globe"></i> 
-						<span>{{ company.address }}</span></li>
+						<span>{{ company.detail.address }}</span></li>
 				</ul>
 			</div>
 		</div>
 	</div>
-</div>
 {% endmacro %}
