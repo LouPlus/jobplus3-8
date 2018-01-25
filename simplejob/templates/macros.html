@@ -57,12 +57,39 @@
 {% macro render_company(company) %}
 <div class="col-sm-6 col-md-3 company-item">
   <div class="thumbnail">
-      <img src="{{ company.detail.logo }}" width="100" height="100" alt="{{ company.detail.name }}">
+      <a href="/company/{{ company.id }}">
+        <img src="{{ company.detail.logo }}" width="100" height="100" alt="{{ company.detail.name }}">
+      </a>
       <h3>{{ company.detail.name }}</h3>
       <p>{{ company.detail.field }}</p>
   <hr>
-  <p>在招职位：{{ company.job_intention.name }}</p>
+  <p>在招职位：</p>
   </div>
 </div>
 {% endmacro %}
 
+
+{% macro render_job(job) %}
+<div class="col-sm-6 col-md-4">
+  <div class="job-box">
+      <div class="caption">
+        <b>{{ job.name }}</b>
+        <p>经验：{{ job.exp }} {% if job.exp != '不限' %}年{% endif %} 学历：{{ job.degree }}</p>
+        {% for tag in job.tag_list %}
+        <span class="label label-default">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <hr>
+      <div class="media">
+        <div class="media-left">
+          <a href="/job/{{ job.id }}">
+            <img class="media-object" src="{{ job.company.logo }}" width="40" height="40" alt="job.company.name">
+          </a>
+        </div>
+        <div class="media-body"><h4 class="media-heading">{{ job.company.name }}</h4>
+          <span class="company-meta">{{ job.company.field }}/{{ job.company.finance_stage }}/{{ job.company.address }}</span>
+          </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

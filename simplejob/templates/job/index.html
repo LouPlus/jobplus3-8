@@ -1,30 +1,13 @@
 {% extends "base.html" %}
-{% from "macros.html" import render_pagination %}
+{% from "macros.html" import render_job, render_pagination %}
 {% block title %}职位列表{% endblock %}
 
 {% block body %}
 <div class="s_position_list">
 	<h2 class="h4 mt30 nav-title">最新职位</h2>
-	{% for job in pagination.items %}
-	<div class="col-sm-6 col-md-4">
-  		<div class="job-box">
-      		<div class="caption">
-        		<b>{{ job.name }}</b>
-      		</div>
-      		<hr>
-      		<div class="media">
-        		<div class="media-left">
-                    <a href="{{ url_for('job.detail', job_id=job.id) }}">
-          				<img class="media-object" src="{{ job.company.logo }}" width="40" height="40" alt="{{ job.company.logo }}">
-          			</a>
-          		</div>
-          		<div class="media-body">
-					<h4 class="media-heading">{{ job.company.name }}</h4>       
-          		</div>
-        	</div>
-    	</div>
-	</div>
-	{% endfor%}
+    {% for job in pagination.items %}
+        {{ render_job(job) }}
+    {% endfor %}
 </div>
 {{ render_pagination(pagination, 'job.index') }}
 {% endblock %}

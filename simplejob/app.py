@@ -1,3 +1,5 @@
+import flask_whooshalchemyplus as whoosh
+
 from flask import Flask, render_template
 
 from flask_login import LoginManager

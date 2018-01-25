@@ -37,7 +37,6 @@ class User(Base, UserMixin):
     _password = db.Column('password', db.String(128), nullable=False)
     phone = db.Column(db.String(18), unique=True, index=True, nullable=True)
     is_enable = db.Column(db.Boolean, default=True)
-    job_years = db.Column(db.String(2), nullable=True)
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_JOBHUNTER)
     job_intention = db.relationship('Job',
@@ -88,8 +87,15 @@ class Company(Base):
     website = db.Column(db.String(64), nullable=True)
     address = db.Column(db.String(64), nullable=True)
     logo = db.Column(db.String(128))
-    summary = db.Column(db.String(128))
+    # 融资进度
+    finance_stage = db.Column(db.String(128))
+    # 公司领域
+    field = db.Column(db.String(128))
+    # 公司标签
+    tags = db.Column(db.String(128))
+    # 简介
     description = db.Column(db.String(1024))
+    # 详情
     company_info = db.Column(db.Text)
 
     def __repr__(self):
@@ -112,13 +118,16 @@ class Job(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, index=True)
-    salary = db.Column(db.String(64), nullable=False)
+    salary_low = db.Column(db.Integer, nullable=False)
+    salary_high = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text)
     requirement = db.Column(db.String(128))
     # 经验要求
     exp = db.Column(db.String(64), default="经验不限", nullable=False)
     # 学历要求
     degree = db.Column(db.String(64), nullable=False)
+    tags = db.Column(db.String(128))
+    location = db.Column(db.String(24))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False, backref='jobs')
 
@@ -128,3 +137,7 @@ class Job(Base):
     @property
     def url(self):
         return url_for('job.detail', course_id = self.id)
+
+    @property
+    def tag_list(self):
+        return self.tags.split(",")

@@ -12,6 +12,7 @@ from flask_login import login_user
 
 from simplejob.models import db
 from simplejob.models import User
+from simplejob.models import Job
 from simplejob.forms import RegisterForm
 from simplejob.forms import LoginForm
 from simplejob.forms import UserProfileForm
@@ -91,3 +92,15 @@ def addcompany():
         flash("企业创建成功", "success")
         return redirect(url_for("admin.users"))
     return render_template("admin/create_company.html", form=form)
+
+
+@admin.route("/jobs")
+@admin_required
+def jobs():
+    page = request.args.get("page", default=1, type=int)
+    pagination = Job.query.paginate(
+        page=page,
+        per_page=current_app.config["ADMIN_PER_PAGE"],
+        error_out=False
+    )
+    return render_template("admin/jobs.html", pagination=pagination)

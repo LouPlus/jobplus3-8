@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from flask import abort
 from flask import Blueprint
 from flask import request
 from flask import current_app
@@ -52,3 +53,11 @@ def profile():
             flash("企业信息更新成功", "success")
             return redirect(url_for(".profile"))
     return render_template("company/profile.html", form=form)
+
+
+@company.route("/<int:company_id>")
+def detail(company_id):
+    company = User.query.get_or_404(company_id)
+    if not company.is_company:
+        abort(404)
+    return render_template("company/detail.html", company=company, active="", panel="about")
