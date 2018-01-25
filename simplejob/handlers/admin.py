@@ -81,7 +81,13 @@ def addcompany():
     form = RegisterForm()
     form.username.label = u"企业名称"
     if form.validate_on_submit():
-        form.create_user()
+        if not form.username.data.isalnum():
+            flash("企业名称必须由数字和字母组成", "error")
+            return redirect(url_for("admin.users"))
+        company = form.create_user()
+        company.role = User.ROLE_COMPANY
+        db.session.add(company)
+        db.session.commit()
         flash("企业创建成功", "success")
         return redirect(url_for("admin.users"))
     return render_template("admin/create_company.html", form=form)

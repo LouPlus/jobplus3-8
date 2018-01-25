@@ -4,4 +4,5 @@
 {% block body %}
 <h4>编辑用户</h4>
 {{ render_form(form, url_for('user.profile')) }}
+{{ dropzone.create(action_view='user.upload') }}
 {% endblock %}

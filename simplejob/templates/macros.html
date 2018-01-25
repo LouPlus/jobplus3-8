@@ -57,41 +57,14 @@
 
 
 {% macro render_company(company) %}
-	<div class="row" style="margin-right: 0;">
-		<div class="media">
-			<div class="col-md-9">
-				<div class="pull-left">
-					<div class="img-warp">
-                        <a href="#" class="company-logo" style="background-image: url('{{ company.detail.logo }}')"> {{ company.detail.name }}</a>
-					</div>
-				</div>
-				<div class="media-body" style="padding-left: 12px;">
-					<h4 class="media-heading" id="media-heading">
-						<a href="#">
-							{{ company.detail.name }}
-						</a> 
-						<a class="anchorjs-link" href="#media-heading"> 
-							<span class="anchorjs-icon"></span>
-						</a>
-					</h4>
-					<a class="company-site" target="_blank" rel="nofollow" href="http://{{ company.website }}/"> {{ company.detail.website }} </a>
-					<p class="company-desc">{{ company.detail.description }}</p>
-					<ul class="taglist--inline ib">
-						<li class="tagPopup">
-							<a class="tag tag-sm" target="_blank" href="#" data-toggle="popover" data-original-title="#" data-id="">  </a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<ul class="company-list-single-info">
-					<li class="text-muted">
-					<i class="fa fa-user"></i> 
-						<a class="company-list-single-info-num" target="_blank" href="/">
-							<span>#</span> </a> <span>个在招职位</span></li>
-					<li class="text-muted "><i class="fa fa-globe"></i> 
-						<span>{{ company.detail.address }}</span></li>
-				</ul>
-			</div>
-		</div>
-	</div>
+<div class="col-sm-6 col-md-3 company-item">
+  <div class="thumbnail">
+      <img src="{{ company.detail.logo }}" width="100" height="100" alt="{{ company.detail.name }}">
+      <h3>{{ company.detail.name }}</h3>
+      <p>{{ company.detail.field }}</p>
+  <hr>
+  <p>在招职位：{{ company.job_intention.name }}</p>
+  </div>
+</div>
 {% endmacro %}
+
