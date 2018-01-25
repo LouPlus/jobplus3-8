@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint
+from flask import request
 from flask import current_app
 from flask import flash
 from flask import url_for

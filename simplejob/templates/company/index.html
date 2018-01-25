@@ -4,6 +4,7 @@
 
 {% block body %}
 <div class="company-list">
+    <h1 class="h4 mt30 nav-title">企业列表</h1>
     {% for company in pagination.items %}
         {{ render_company(company) }}
     {% endfor%}
