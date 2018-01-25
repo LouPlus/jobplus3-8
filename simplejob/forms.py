@@ -94,8 +94,8 @@ class UserProfileForm(FlaskForm):
     job_years = StringField("工作年限",
             validators=[Required(message="请填写内容"), Length(1, 2,
                 message="请确认您输入的工作年限")])       
-    resume_url = StringField("简历",
-            validators=[Required(message="请填写内容")])
+    # resume_url = StringField("简历",
+    #         validators=[Required(message="请填写内容")])
     submit = SubmitField("提交")
 
     def update_profile(self, user):

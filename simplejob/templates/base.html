@@ -4,6 +4,8 @@
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
         {% block head_css %}
+        {{ dropzone.load() }}
+        {{ dropzone.style("border: 2px dashed #0087F7; margin: 10%; min-height: 100px;") }}
         {{ moment.include_jquery() }}
         {{ moment.include_moment() }}
         {{ moment.lang('zh-CN')}}
@@ -45,6 +47,16 @@
                             </li>
                             <li>
                                 <a href="{{ url_for('front.login') }}">登录</a>
+                            </li>
+                            <li style="margin-top:1.5%;">
+                            <div class="col-lg-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">Go!</button>
+                                    </span>
+                                </div>
+                            </div>
                             </li>
                         {% else %}
                             <li class="dropdown">

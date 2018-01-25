@@ -4,31 +4,27 @@
 
 {% block body %}
 <div class="s_position_list">
-	<h2 class="s_position_list">最新职位</h2>
+	<h2 class="h4 mt30 nav-title">最新职位</h2>
 	{% for job in pagination.items %}
-	<ul class="item_con_list">
-		<li class="con_list_item default_list">
-			<a href="{{ url_for('job.detail', job_id=job.id) }}" style="max-width: 180px;">
-				{{ job.name }}
-			</a> 
-			<span class="text-muted job-list-item-block-city"> [{{ job.address }}]</span>
-			<div class="p_bot">
-				<strong class="money"> {{ job.salary }} </strong>
-				{{ job.requirement }}
-			</div>
-			<p class="company_name">
-				<a href="#">
-					{{ job.company.name }}
-                		</a> · <span class="format_time">{{ moment(job.created_at).fromNow(refresh=True) }} </span>
-			</p>
-		</li>
-	</ul>
-	{% endfor%}
-	<div class="more">
-		<span>
-			<a href="{{ url_for('front.index') }}">更多最新职位</a>
-		</span>
+	<div class="col-sm-6 col-md-4">
+  		<div class="job-box">
+      			<div class="caption">
+        			<b>{{ job.name }}</b>
+      			</div>
+      			<hr>
+      			<div class="media">
+        			<div class="media-left">
+          				<a href="#">
+          					<img class="media-object" src="{{ job.company.logo }}" width="40" height="40" alt="{{ job.company.logo }}">
+          				</a>
+          			</div>
+          			<div class="media-body">
+					<h4 class="media-heading">{{ job.company.name }}</h4>       
+          			</div>
+        		</div>
+    		</div>
 	</div>
+	{% endfor%}
 </div>
 {{ render_pagination(pagination, 'job.index') }}
 {% endblock %}
