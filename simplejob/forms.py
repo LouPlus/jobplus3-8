@@ -11,6 +11,7 @@ from wtforms import TextAreaField
 from wtforms import SubmitField
 from wtforms import ValidationError
 
+from wtforms.validators import URL
 from wtforms.validators import Length
 from wtforms.validators import EqualTo
 from wtforms.validators import Regexp
@@ -19,7 +20,6 @@ from wtforms.validators import DataRequired as Required
 
 from simplejob.models import db
 from simplejob.models import User
-from simplejob.models import Company
 
 
 class RegisterForm(FlaskForm):
@@ -94,8 +94,8 @@ class UserProfileForm(FlaskForm):
     job_years = StringField("工作年限",
             validators=[Required(message="请填写内容"), Length(1, 2,
                 message="请确认您输入的工作年限")])       
-    # resume_url = StringField("简历",
-    #         validators=[Required(message="请填写内容")])
+    resume_url = StringField("简历",
+             validators=[Required(message="请填写内容")])
     submit = SubmitField("提交")
 
     def update_profile(self, user):
@@ -121,8 +121,8 @@ class CompanyProfileForm(FlaskForm):
             validators=[Required(message="请填写内容"), Length(1, 128,
                 message="请确认您输入的Logo")])       
     website = StringField("公司网址",
-            validators=[Required(message="请填写内容"), Length(12, 128,
-                message="请确认您输入的网址")])
+            validators=[Required(message="请填写内容"),
+                URL(message="请确认您输入的网址")])
     summary = StringField("公司简介",
             validators=[Required(message="请填写内容"), Length(12, 128,
                 message="请确认您输入的内容")])

@@ -22,7 +22,8 @@ def iter_users():
     yield User(
             username = '测试 User',
             email = 'User@test.com',
-            password = '123456'
+            password = '123456',
+            role = 20
             )
 
 def iter_job():

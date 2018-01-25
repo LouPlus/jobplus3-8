@@ -6,9 +6,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import url_for
 from flask_login import UserMixin
 
-from jieba.analyse import ChineseAnalyzer
-import flask_whooshalchemyplus as whoosh
-
 
 db = SQLAlchemy()
 
@@ -50,7 +47,7 @@ class User(Base, UserMixin):
     # 该处是否可以使用外键
     company_id = db.Column(db.Integer)
     # 暂时先用简历地址代替简历存储
-    # resume_url = db.Column(db.String(64))
+    resume_url = db.Column(db.String(64))
 
     def __repr__(self):
         return '<User: {}>'.format(self.username)
@@ -81,8 +78,6 @@ class User(Base, UserMixin):
 
 class Company(Base):
     __tablename__ = 'company'
-    __searchable__ = ['name', 'address']
-    __analyzer__ = ChineseAnalyzer()
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True, index=True)
@@ -92,7 +87,7 @@ class Company(Base):
     user = db.relationship("User", uselist=False, backref=db.backref("company_detail", uselist=False))
     website = db.Column(db.String(64), nullable=True)
     address = db.Column(db.String(64), nullable=True)
-    logo = db.Column(db.String(64))
+    logo = db.Column(db.String(128))
     summary = db.Column(db.String(128))
     description = db.Column(db.String(1024))
     company_info = db.Column(db.Text)
@@ -114,13 +109,10 @@ class Company(Base):
 
 class Job(Base):
     __tablename__ = 'job'
-    __searchable__ = ['name', 'salary']
-    __analyzer__ = ChineseAnalyzer()
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, index=True)
     salary = db.Column(db.String(64), nullable=False)
-    address = db.Column(db.String(64), nullable=False)
     description = db.Column(db.Text)
     requirement = db.Column(db.String(128))
     # 经验要求
