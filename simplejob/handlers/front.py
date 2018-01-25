@@ -9,6 +9,7 @@ from flask_login import (login_user, logout_user,
 from simplejob.models import db
 from simplejob.models import User
 from simplejob.models import Job
+from simplejob.models import Company
 from simplejob.forms import LoginForm
 from simplejob.forms import RegisterForm
 
@@ -27,7 +28,8 @@ def userregister():
         form.create_user()
         flash("注册成功，请登录！", "success")
         return redirect(url_for(".login"))
-    return render_template("user/register.html", form=form)
+    return render_template("user/register.html", form=form,
+            active = 'userregister')
 
 
 @front.route("/companyregister", methods=["GET", "POST"])
@@ -44,7 +46,8 @@ def companyregister():
         db.session.commit()
         flash("注册成功，请登录！", "success")
         return redirect(url_for(".login"))
-    return render_template("company/register.html", form=form)
+    return render_template("company/register.html", form=form,
+            active = 'companyregister')
 
 
 @front.route("/login", methods=["GET", "POST"])
@@ -52,7 +55,6 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        print(user.is_enable)
         if not user.is_enable:
             flash("该用户已被管理员禁用", "error")
             return redirect(url_for(".login"))
@@ -66,7 +68,8 @@ def login():
             elif user.is_jobhunter:
                 next = "user.profile"
             return redirect(url_for(next))
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form,
+            active = 'login')
 
 
 @front.route("/")
@@ -80,7 +83,7 @@ def index():
             error_out = False
             )
     return render_template('index.html', pagination = pagination,
-            current_time = datetime.utcnow())
+            current_time = datetime.utcnow(), active = 'index')
 
 
 @front.route("/logout")

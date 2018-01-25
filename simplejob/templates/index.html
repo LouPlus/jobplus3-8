@@ -34,5 +34,8 @@
     </ul>
   {% endfor %}
 </div>
-{{ render_pagination(pagination, 'front.index') }}
+
+<p class="list-more">
+<a href="{{ url_for('job.index') }}" class="btn btn-success btn-lg list-more-btn">查看更多</a>
+</p>
 {% endblock %}

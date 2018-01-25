@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ company.detail.name }}
+{% endblock %}
+
+{% block head %}
+<div class="jumbotron">
+  <div class="container">
+    <div class="col-md-3">
+      <div class="thumbnail">
+        <img src="{{ company.detail.logo }}">
+      </div>
+    </div>
+    <div class="col-md-9">
+      <h2>{{ company.detail.name }}</h2>
+      <p>{{ company.detail.description }}</p>
+      <a href="{{ company.detail.website }}">{{ company.detail.website }}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="col-md-8">
+  <ul class="nav nav-tabs">
+      <li role="presentation" class="{% if panel == 'about' %}active{% endif %}"><a href="{{ url_for('company.detail', company_id=company.detail.id) }}">公司介绍</a></li>
+      <li role="presentation" class=""><a href="#">在招职位()</a></li>
+  </ul>
+</div>
+<div class="col-md-4">
+  <h4>公司基本信息</h4>
+  <p>领域：{{ company.detail.field }}</p>
+  <p>融资：{{ company.detail.finance_stage }}</p>
+  <p>城市：{{ company.detail.address }}</p>
+</div>
+{% endblock %}
