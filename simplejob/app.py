@@ -1,4 +1,4 @@
-import flask_whooshalchemyplus as whoosh
+# -*- coding: utf-8 -*-
 
 from flask import Flask, render_template
 
