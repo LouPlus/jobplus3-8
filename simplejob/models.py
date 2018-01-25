@@ -76,8 +76,12 @@ class User(Base, UserMixin):
         return self.role == self.ROLE_JOBHUNTER
 
 
-class Company(Base):
+class Company(Base, UserMixin):
     __tablename__ = 'company'
+
+    ROLE_JOBHUNTER = 10
+    ROLE_COMPANY = 20
+    ROLE_ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True, index=True)
@@ -91,6 +95,8 @@ class Company(Base):
     summary = db.Column(db.String(128))
     description = db.Column(db.String(1024))
     company_info = db.Column(db.Text)
+    is_enable = db.Column(db.Boolean, default=True)
+    role = db.Column(db.SmallInteger, default=ROLE_COMPANY)
 
     def __repr__(self):
         return '<Company: {}'.format(self.name)
@@ -105,6 +111,30 @@ class Company(Base):
 
     def check_password(self, password):
         return check_password_hash(self._password, password)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    @property
+    def is_admin(self):
+        return self.role == self.ROLE_ADMIN
+
+    @property
+    def is_company(self):
+        return self.role == self.ROLE_COMPANY
+
+    @property
+    def is_jobhunter(self):
+        return self.role == self.ROLE_JOBHUNTER
 
 
 class Job(Base):

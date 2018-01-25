@@ -9,6 +9,7 @@ from flask_login import (login_user, logout_user,
 from simplejob.models import db
 from simplejob.models import User
 from simplejob.models import Job
+from simplejob.models import Company
 from simplejob.forms import LoginForm
 from simplejob.forms import RegisterForm
 
@@ -51,7 +52,10 @@ def companyregister():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        if User.query.filter_by(email=form.email.data).first():
+            user = User.query.filter_by(email=form.email.data).first()
+        elif Company.query.filter_by(email=form.email.data).first():
+            user = Company.query.filter_by(email=form.email.data).first()
         print(user.is_enable)
         if not user.is_enable:
             flash("该用户已被管理员禁用", "error")

@@ -15,8 +15,13 @@ from simplejob.forms import CompanyProfileForm
 company = Blueprint("company", __name__, url_prefix="/company")
 
 
-@company.route("/admin/profile", methods=["GET", "POST"])
+@company.route("/profile", methods=["GET", "POST"])
 @login_required
+def profile():
+    form = CompanyProfileForm(obj=current_user)
+    return render_template('company/profile.html', form = form)
+
+'''
 def profile():
     if not current_user.is_company:
         flash("您没有权限访问", "warning")
@@ -32,3 +37,4 @@ def profile():
             flash("企业信息更新成功", "success")
             return redirect(url_for(".profile"))
     return render_template("company/profile.html", form=form)
+'''

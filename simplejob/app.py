@@ -31,7 +31,11 @@ def register_extensions(app):
 
     @login_manager.user_loader
     def user_loader(id):
-        return User.query.get(id)
+        if User.query.get(id):
+            user = User.query.get(id)
+        elif Company.query.get(id):
+            user = Company.query.get(id)
+        return user
 
     login_manager.login_view = "front.login"
     login_manager.login_message = "请登录而后访问网页"

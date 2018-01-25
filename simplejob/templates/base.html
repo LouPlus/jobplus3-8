@@ -36,6 +36,7 @@
                         <li><a href="/">公司</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        {% if not current_user.is_authenticated  %}
                             <li>
                             <a href="{{ url_for('front.companyregister') }}">公司注册</a>
                             </li>
@@ -45,6 +46,7 @@
                             <li>
                                 <a href="{{ url_for('front.login') }}">登录</a>
                             </li>
+                        {% else %}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button", aria-haspopup="true" aria-expanded="false">
                                     <span id="username">{{ current_user.username }}</span>
@@ -56,6 +58,7 @@
                                     <li><a href="{{ url_for('front.logout') }}">退出登录</a></li>
                                 </ul>
                             </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
