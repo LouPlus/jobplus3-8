@@ -1,3 +1,4 @@
+{% from "macros.html" import render_form %}
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
@@ -29,21 +30,25 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active">
+                        <li class="{% if active == 'index' %}active{% endif %}">
                             <a href="/">首页<span class="sr-only">(current)</span></a>
                         </li>
-                        <li><a href="/">职位</a></li>
-                        <li><a href="/">公司</a></li>
+                        <li class="{% if active == 'job' %}active{% endif %}">
+                            <a href="{{ url_for('job.index') }}">职位</a>
+                        </li>
+                        <li class="{% if active == 'company' %}active{% endif %}">
+                            <a href="{{ url_for('company.index') }}">公司</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        {% if not current_user.is_authenticated  %}
-                            <li>
-                            <a href="{{ url_for('front.companyregister') }}">公司注册</a>
+                        {% if not current_user.is_authenticated %}
+                            <li class="{% if active == 'companyregister' %}active{% endif %}">
+                            	<a href="{{ url_for('front.companyregister') }}">公司注册</a>
                             </li>
-                            <li>
-                            <a href="{{ url_for('front.userregister') }}">求职者注册</a>
+                            <li class="{% if active == 'userregister' %}active{% endif %}">
+                            	<a href="{{ url_for('front.userregister') }}">求职者注册</a>
                             </li>
-                            <li>
+                            <li class="{% if active == 'login' %}active{% endif %}">
                                 <a href="{{ url_for('front.login') }}">登录</a>
                             </li>
                         {% else %}

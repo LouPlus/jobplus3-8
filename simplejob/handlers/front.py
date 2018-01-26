@@ -28,7 +28,8 @@ def userregister():
         form.create_user()
         flash("注册成功，请登录！", "success")
         return redirect(url_for(".login"))
-    return render_template("user/register.html", form=form)
+    return render_template("user/register.html", form=form,
+            active = 'userregister')
 
 
 @front.route("/companyregister", methods=["GET", "POST"])
@@ -45,7 +46,8 @@ def companyregister():
         db.session.commit()
         flash("注册成功，请登录！", "success")
         return redirect(url_for(".login"))
-    return render_template("company/register.html", form=form)
+    return render_template("company/register.html", form=form,
+            active = 'companyregister')
 
 
 @front.route("/login", methods=["GET", "POST"])
@@ -70,7 +72,8 @@ def login():
             elif user.is_jobhunter:
                 next = "user.profile"
             return redirect(url_for(next))
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form,
+            active = 'login')
 
 
 @front.route("/")
@@ -84,7 +87,7 @@ def index():
             error_out = False
             )
     return render_template('index.html', pagination = pagination,
-            current_time = datetime.utcnow())
+            current_time = datetime.utcnow(), active = 'index')
 
 
 @front.route("/logout")

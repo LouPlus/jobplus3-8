@@ -1,10 +1,14 @@
+import flask_whooshalchemyplus as whoosh
+
 from flask import Flask, render_template
+
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_moment import Moment
 
 from simplejob.config import configs
 from simplejob.models import db, User, Company, Job
-from flask_moment import Moment
+
 
 def register_blueprints(app):
     from .handlers import front, job, company, admin, user #, tests
@@ -14,17 +18,20 @@ def register_blueprints(app):
     app.register_blueprint(admin)
     app.register_blueprint(user)
 
+
 def create_app(config):
     app = Flask(__name__)
-    moment = Moment(app)
     app.config.from_object(configs.get(config))
     register_blueprints(app)
     register_extensions(app)
     return app
 
+
 def register_extensions(app):
     db.init_app(app)
     Migrate(app, db)
+    
+    moment = Moment(app)
 
     login_manager = LoginManager()
     login_manager.init_app(app)

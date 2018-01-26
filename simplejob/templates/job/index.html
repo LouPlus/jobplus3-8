@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_job, render_pagination %}
+{% block title %}职位列表{% endblock %}
+
+{% block body %}
+<div class="s_position_list">
+	<h2 class="h4 mt30 nav-title">最新职位</h2>
+    {% for job in pagination.items %}
+        {{ render_job(job) }}
+    {% endfor %}
+</div>
+{{ render_pagination(pagination, 'job.index') }}
+{% endblock %}
