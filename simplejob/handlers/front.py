@@ -68,7 +68,7 @@ def login():
             if user.is_admin:
                 next = "admin.users"
             elif user.is_company:
-                next = "company.profile"
+                return redirect(url_for('company.index', company_id=user.id))
             elif user.is_jobhunter:
                 next = "user.profile"
             return redirect(url_for(next))

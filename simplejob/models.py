@@ -33,7 +33,7 @@ class User(Base, UserMixin):
     ROLE_ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), unique=True, index=True, nullable=True)
+    name = db.Column(db.String(32), unique=True, index=True, nullable=True)
     _password = db.Column('password', db.String(128), nullable=False)
     phone = db.Column(db.String(18), unique=True, index=True, nullable=True)
     is_enable = db.Column(db.Boolean, default=True)

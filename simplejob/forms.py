@@ -22,7 +22,7 @@ from wtforms.validators import DataRequired as Required
 
 from simplejob.models import db
 from simplejob.models import User
-
+from simplejob.models import Company
 
 class RegisterForm(FlaskForm):
     username = StringField("用户名",
@@ -108,8 +108,7 @@ class UserProfileForm(FlaskForm):
 
 class CompanyProfileForm(FlaskForm):
     name = StringField("企业名称",
-            validators=[Required(message="请填写内容"), Length(3, 24,
-                message="密码长度要在3～24个字符之间")])
+            validators=[Required(message="请填写内容"), Length(3, 24)])
     email = StringField("企业邮箱",
             validators=[Required(message="请填写内容"),
                 Email(message="请输入合法的email地址")])
@@ -118,7 +117,7 @@ class CompanyProfileForm(FlaskForm):
                 message="密码长度要在6～24个字符之间")])
     address = StringField("办公地址",
             validators=[Required(message="请填写内容"), Length(6, 128,
-                message="密码长度要在6～128个字符之间")])
+                message="工作地址长度要在6～128个字符之间")])
     logo = StringField("公司Logo",
             validators=[Required(message="请填写内容"), Length(1, 128,
                 message="请确认您输入的Logo")])
@@ -126,10 +125,10 @@ class CompanyProfileForm(FlaskForm):
             validators=[Required(message="请填写内容"),
                 URL(message="请确认您输入的网址")])
     description = StringField("公司简介",
-            validators=[Required(message="请填写内容"), Length(12, 128,
+            validators=[Required(message="请填写内容"), Length(1, 128,
                 message="请确认您输入的内容")])
     company_info = TextAreaField("公司详情",
-            validators=[Required(message="请填写内容"), Length(12, 1024,
+            validators=[Required(message="请填写内容"), Length(1, 1024,
                 message="请确认您输入的内容")])
     finance_stage = SelectField("融资阶段",
             choices=[
