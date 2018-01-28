@@ -19,7 +19,7 @@ from simplejob.forms import CompanyProfileForm
 
 company = Blueprint("company", __name__, url_prefix="/company")
 
-
+'''
 @company.route("/")
 def index():
     page = request.args.get('page', default = 1, type = int)
@@ -33,11 +33,15 @@ def index():
                     )
     return render_template('company/index.html', pagination = pagination,
             active = 'company')
+'''
 
-
-
-@company.route("/admin/profile", methods=["GET", "POST"])
+@company.route("/profile", methods=["GET", "POST"])
 @login_required
+def profile():
+    form = CompanyProfileForm(obj=current_user)
+    return render_template('company/profile.html', form = form)
+
+'''
 def profile():
     if not current_user.is_company:
         flash("您没有权限访问", "warning")
@@ -54,7 +58,6 @@ def profile():
             return redirect(url_for(".profile"))
     return render_template("company/profile.html", form=form)
 
-
 @company.route("/<int:company_id>")
 def detail(company_id):
     company = User.query.get_or_404(company_id)
@@ -62,3 +65,4 @@ def detail(company_id):
         abort(404)
     return render_template("company/detail.html",
             company=company, active="", panel="about")
+'''
