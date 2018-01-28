@@ -1,7 +1,11 @@
-{% extends "base.html" %}
+{% extends "company/index.html" %}
 {% from "macros.html" import render_form %}
+{% block title %}
+企业信息管理
+{% endblock %}
 
 {% block body %}
-<h4>编辑用户</h4>
 {{ render_form(form, url_for('company.profile')) }}
 {% endblock %}
+
+

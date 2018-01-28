@@ -1,0 +1,40 @@
+{% extends "company/index.html" %}
+{% from "macros.html" import render_pagination %}
+
+{% block title %}
+企业在招岗位管理
+{% endblock %}
+
+{% block jobs_manage %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>在招岗位</th>
+      <th>发布时间</th>
+      <th>操作</th>
+    </tr>
+    <tbody>
+      {%for job in pagination.items %}
+      <tr>
+        <td>{{ job.id }}</td>
+        <td>{{ job.name }}</td>
+        <td>{{ job.created_at }}</td>
+        <td>
+            <div class="btn-group" role="group">
+              <a href="" type="button" class="btn btn-default" title="编辑">
+                <span class="glyphicom glyphicon-pencil" title="编辑" aria-hidden="true"></span>
+              </a>
+              <a href="" type="button" class="btn btn-default" title="删除">
+                <span class="glyphicom glyphicon-trash" title="删除" aria-hidden="true"></span>
+              </a>
+            </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </thead>
+</table>
+
+{{ render_pagination(pagination, 'company.jobs_manage') }}
+{% endblock %}
