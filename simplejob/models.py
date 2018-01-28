@@ -112,6 +112,10 @@ class Company(Base):
     def check_password(self, password):
         return check_password_hash(self._password, password)
 
+    @property
+    def tag_list(self):
+        return self.tags.split(",")
+
 
 class Job(Base):
     __tablename__ = 'job'
@@ -121,15 +125,22 @@ class Job(Base):
     salary_low = db.Column(db.Integer, nullable=False)
     salary_high = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text)
-    requirement = db.Column(db.String(128))
+    # 工作详情页对工作需求的描述 
+    requirement = db.Column(db.Text)
     # 经验要求
     exp = db.Column(db.String(64), default="经验不限", nullable=False)
     # 学历要求
     degree = db.Column(db.String(64), nullable=False)
-    tags = db.Column(db.String(128))
+    # 技术栈
+    stacks = db.Column(db.String(128))
     location = db.Column(db.String(24))
+    # 全职/兼职
+    is_fulltime = db.Column(db.Boolean, default=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False, backref='jobs')
+    # 职位上线
+    is_enable = db.Column(db.Boolean, default=True)
+
 
     def __repr__(self):
         return '<Job: {}'.format(self.name)
@@ -139,5 +150,5 @@ class Job(Base):
         return url_for('job.detail', course_id = self.id)
 
     @property
-    def tag_list(self):
-        return self.tags.split(",")
+    def stack_list(self):
+        return self.stacks.split(",")
