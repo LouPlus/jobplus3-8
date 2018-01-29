@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import render_form %}
 
 {% block title %}
 {{ company.detail.name }}
@@ -24,9 +25,12 @@
 {% block body %}
 <div class="col-md-8">
   <ul class="nav nav-tabs">
-      <li role="presentation" class="{% if panel == 'about' %}active{% endif %}"><a href="{{ url_for('company.detail', company_id=company.detail.id) }}">公司介绍</a></li>
-      <li role="presentation" class=""><a href="#">在招职位()</a></li>
+      <li role="presentation" class="{% if panel == 'about' %}active{% endif %}"><a href="{{ url_for('company.detail', company_id=company.id) }}">公司介绍</a></li>
+      <li role="presentation" class=""><a href="{{ url_for('company.job_manage', company_id=company.id) }}">在招职位()</a></li>
   </ul>
+  <div>
+      {{ render_form(form, url_for('company.profile')) }}
+  </div>
 </div>
 <div class="col-md-4">
   <h4>公司基本信息</h4>
