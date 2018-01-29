@@ -75,12 +75,8 @@ class User(Base, UserMixin):
         return self.role == self.ROLE_JOBHUNTER
 
 
-class Company(Base, UserMixin):
+class Company(Base):
     __tablename__ = 'company'
-
-    ROLE_JOBHUNTER = 10
-    ROLE_COMPANY = 20
-    ROLE_ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True, index=True)
@@ -101,8 +97,6 @@ class Company(Base, UserMixin):
     description = db.Column(db.String(1024))
     # 详情
     company_info = db.Column(db.Text)
-    is_enable = db.Column(db.Boolean, default=True)
-    role = db.Column(db.SmallInteger, default=ROLE_COMPANY)
 
     def __repr__(self):
         return '<Company: {}'.format(self.name)
@@ -118,29 +112,9 @@ class Company(Base, UserMixin):
     def check_password(self, password):
         return check_password_hash(self._password, password)
 
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
-
     @property
-    def is_admin(self):
-        return self.role == self.ROLE_ADMIN
-
-    @property
-    def is_company(self):
-        return self.role == self.ROLE_COMPANY
-
-    @property
-    def is_jobhunter(self):
-        return self.role == self.ROLE_JOBHUNTER
+    def tag_list(self):
+        return self.tags.split(",")
 
 
 class Job(Base):
@@ -151,15 +125,22 @@ class Job(Base):
     salary_low = db.Column(db.Integer, nullable=False)
     salary_high = db.Column(db.Integer, nullable=False)
     description = db.Column(db.Text)
-    requirement = db.Column(db.String(128))
+    # 工作详情页对工作需求的描述 
+    requirement = db.Column(db.Text)
     # 经验要求
     exp = db.Column(db.String(64), default="经验不限", nullable=False)
     # 学历要求
     degree = db.Column(db.String(64), nullable=False)
-    tags = db.Column(db.String(128))
+    # 技术栈
+    stacks = db.Column(db.String(128))
     location = db.Column(db.String(24))
+    # 全职/兼职
+    is_fulltime = db.Column(db.Boolean, default=False)
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
     company = db.relationship('Company', uselist=False, backref='jobs')
+    # 职位上线
+    is_enable = db.Column(db.Boolean, default=True)
+
 
     def __repr__(self):
         return '<Job: {}'.format(self.name)
@@ -169,5 +150,5 @@ class Job(Base):
         return url_for('job.detail', course_id = self.id)
 
     @property
-    def tag_list(self):
-        return self.tags.split(",")
+    def stack_list(self):
+        return self.stacks.split(",")
