@@ -1,25 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from flask import abort
-from flask import Blueprint
-from flask import request
-from flask import current_app
-from flask import flash
-from flask import url_for
-from flask import render_template
-from flask import redirect
-from flask import render_template
+from flask import (abort, Blueprint, request, current_app, flash,
+        url_for, render_template, redirect, render_template)
 
 from flask_login import login_required
 from flask_login import current_user
 
-from simplejob.models import User
+from simplejob.models import User, Job
 from simplejob.forms import CompanyProfileForm
 
 
 company = Blueprint("company", __name__, url_prefix="/company")
 
-'''
 @company.route("/")
 def index():
     page = request.args.get('page', default = 1, type = int)
@@ -33,7 +25,31 @@ def index():
                     )
     return render_template('company/index.html', pagination = pagination,
             active = 'company')
-'''
+
+@company.route("/detail/<int:company_id>", methods=['GET', 'POST'])
+@login_required
+def detail(company_id):
+    company = User.query.get_or_404(company_id)
+    if not company.is_company:
+        abort(404)
+    form = CompanyProfileForm(obj=current_user)
+    return render_template("company/detail.html",
+            company=company, active="", panel="about", form=form)
+
+@company.route('/job_manage/<int:company_id>', methods=['GET', 'POST'])
+@login_required
+def job_manage(company_id):
+    page = request.args.get('page', default = 1, type = int)
+    pagination = Job.query.filter_by(
+            company_id = company_id
+            ).order_by(Job.created_at.desc()).paginate(
+                    page = page,
+                    per_page = current_app.config['INDEX_PER_PAGE'],
+                    error_out = False
+                    )
+    return render_template('company/jobs_manage.html', pagination = pagination)
+
+
 
 @company.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -57,12 +73,4 @@ def profile():
             flash("企业信息更新成功", "success")
             return redirect(url_for(".profile"))
     return render_template("company/profile.html", form=form)
-
-@company.route("/<int:company_id>")
-def detail(company_id):
-    company = User.query.get_or_404(company_id)
-    if not company.is_company:
-        abort(404)
-    return render_template("company/detail.html",
-            company=company, active="", panel="about")
 '''
