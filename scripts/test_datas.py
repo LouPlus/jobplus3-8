@@ -10,7 +10,6 @@ fake = Faker()
 
 # 生成企业用户
 def iter_users():
-    '''
     yield Company(
             name = '测试 Company',
             email = 'Company@test.com',
@@ -25,6 +24,7 @@ def iter_users():
             password = '123456',
             role = 20
             )
+    '''
 
 def iter_job():
     company = Job.query.filter_by(name = '测试账户').first()
@@ -45,8 +45,10 @@ def run():
     for user in iter_users():
         db.session.add(user)
 
+    '''
     for job in iter_job():
         db.session.add(job)
+    '''
 
     try:
         db.session.commit()
