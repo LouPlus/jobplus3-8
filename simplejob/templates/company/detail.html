@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% from "macros.html" import render_form %}
 
 {% block title %}
 {{ company.detail.name }}
@@ -26,16 +25,31 @@
 <div class="col-md-8">
   <ul class="nav nav-tabs">
       <li role="presentation" class="{% if panel == 'about' %}active{% endif %}"><a href="{{ url_for('company.detail', company_id=company.id) }}">公司介绍</a></li>
-      <li role="presentation" class=""><a href="{{ url_for('company.job_manage', company_id=company.id) }}">在招职位()</a></li>
+      <li role="presentation" class="{% if panel == 'job' %}active{% endif %}"><a href="{{ url_for('company.company_jobs', company_id=company.id) }}">在招职位()</a></li>
   </ul>
-  <div>
-      {{ render_form(form, url_for('company.profile')) }}
-  </div>
+    <div class="company-detail">
+      {% if panel == 'about' %}
+      {{ company.detail.company_info }}
+      {% else %}
+      {% for job in company.enable_jobs %}
+      <div class="job-item">
+        <a href="{{ url_for('job.detail', job_id=job.id) }}">
+        <h4>{{ job.name }}</h4>
+        <p>
+          <span class="job-salary">{{ job.salary_low }}-{{ job.salary_high }}</span>
+          &nbsp;
+          <span class="job-meta">经验{{ job.exp }}{% if not job.exp == '不限' %}年{% endif %}/{{ job.degree }}</span>
+          </p>
+        </a>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
 </div>
 <div class="col-md-4">
   <h4>公司基本信息</h4>
   <p>领域：{{ company.detail.field }}</p>
   <p>融资：{{ company.detail.finance_stage }}</p>
-  <p>城市：{{ company.detail.address }}</p>
+  <p>城市：{{ company.detail.location }}</p>
 </div>
 {% endblock %}
