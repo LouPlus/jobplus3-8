@@ -27,7 +27,6 @@ def index():
             active = 'company')
 
 @company.route("/detail/<int:company_id>", methods=['GET', 'POST'])
-@login_required
 def detail(company_id):
     company = User.query.get_or_404(company_id)
     if not company.is_company:
@@ -73,7 +72,6 @@ def profile():
             flash("企业信息更新成功", "success")
             return redirect(url_for(".profile"))
     return render_template("company/profile.html", form=form)
-'''
 
 
 @company.route("/<int:company_id>")
@@ -83,3 +81,4 @@ def detail(company_id):
         abort(404)
     return render_template("company/detail.html",
             company=company, active="", panel="about")
+'''

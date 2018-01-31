@@ -58,7 +58,6 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
         elif Company.query.filter_by(email=form.email.data).first():
             user = Company.query.filter_by(email=form.email.data).first()
-        print(user.is_enable)
         if not user.is_enable:
             flash("该用户已被管理员禁用", "error")
             return redirect(url_for(".login"))
@@ -68,7 +67,7 @@ def login():
             if user.is_admin:
                 next = "admin.users"
             elif user.is_company:
-                return redirect(url_for('company.detail', company_id = user.id))
+                return redirect(url_for('company.job_manage', company_id = user.id))
             elif user.is_jobhunter:
                 next = "user.profile"
             return redirect(url_for(next))
