@@ -12,6 +12,7 @@ from simplejob.forms import CompanyProfileForm
 
 company = Blueprint("company", __name__, url_prefix="/company")
 
+
 @company.route("/")
 def index():
     page = request.args.get('page', default = 1, type = int)
@@ -26,8 +27,8 @@ def index():
     return render_template('company/index.html', pagination = pagination,
             active = 'company')
 
+
 @company.route("/detail/<int:company_id>", methods=['GET', 'POST'])
-@login_required
 def detail(company_id):
     company = User.query.get_or_404(company_id)
     if not company.is_company:
@@ -35,6 +36,7 @@ def detail(company_id):
     form = CompanyProfileForm(obj=current_user)
     return render_template("company/detail.html",
             company=company, active="", panel="about", form=form)
+
 
 @company.route('/job_manage/<int:company_id>', methods=['GET', 'POST'])
 @login_required
@@ -47,8 +49,8 @@ def job_manage(company_id):
                     per_page = current_app.config['INDEX_PER_PAGE'],
                     error_out = False
                     )
-    return render_template('company/jobs_manage.html', pagination = pagination)
-
+    return render_template('company/jobs_manage.html',
+            pagination = pagination)
 
 
 @company.route("/profile", methods=["GET", "POST"])
@@ -56,6 +58,7 @@ def job_manage(company_id):
 def profile():
     form = CompanyProfileForm(obj=current_user)
     return render_template('company/profile.html', form = form)
+
 
 '''
 def profile():
@@ -73,4 +76,13 @@ def profile():
             flash("企业信息更新成功", "success")
             return redirect(url_for(".profile"))
     return render_template("company/profile.html", form=form)
+
+
+@company.route("/<int:company_id>")
+def detail(company_id):
+    company = User.query.get_or_404(company_id)
+    if not company.is_company:
+        abort(404)
+    return render_template("company/detail.html",
+            company=company, active="", panel="about")
 '''
