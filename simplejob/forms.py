@@ -22,6 +22,7 @@ from wtforms.validators import DataRequired as Required
 
 from simplejob.models import db
 from simplejob.models import User
+from simplejob.models import Job
 
 
 class RegisterForm(FlaskForm):
@@ -177,6 +178,7 @@ class JobForm(FlaskForm):
     salary_high = IntegerField("最高薪水")
     location = StringField("工作地点")
     tags = StringField("职位标签(用逗号区隔)")
+    stacks = StringField("技术栈标签(用逗号区隔)")
     exp = SelectField("工作年限",
                 choices=[
                     ("应届毕业生", "应届毕业生"),
@@ -196,6 +198,8 @@ class JobForm(FlaskForm):
                     ("博士", "博士"),
                     ]
                 )
+    is_fulltime = BooleanField("全职") 
+    treatment = TextAreaField("职位诱惑", validators=[Length(0, 1500)])
     description = TextAreaField("职位描述", validators=[Length(0, 1500)])
     submit = SubmitField("发布")
 
@@ -207,7 +211,7 @@ class JobForm(FlaskForm):
         db.session.commit()
         return job
 
-    def updata_job(self, job):
+    def update_job(self, job):
         self.populate_obj(job)
         db.session.add(job)
         db.session.commit()

@@ -74,6 +74,12 @@ class User(Base, UserMixin):
     def is_jobhunter(self):
         return self.role == self.ROLE_JOBHUNTER
 
+    @property
+    def is_enable_jobs(self):
+        if not self.is_company:
+            raise AttributeError("User类缺少is_enable_jobs属性")
+        return self.jobs.filter(Job.is_enable.is_(True))
+
 
 class Company(Base):
     __tablename__ = 'company'
@@ -124,20 +130,22 @@ class Job(Base):
     name = db.Column(db.String(64), nullable=False, index=True)
     salary_low = db.Column(db.Integer, nullable=False)
     salary_high = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.Text)
     # 工作详情页对工作需求的描述 
-    requirement = db.Column(db.Text)
+    description = db.Column(db.Text)
+    # 工作待遇 
+    treatment = db.Column(db.Text)
     # 经验要求
     exp = db.Column(db.String(64), default="经验不限", nullable=False)
     # 学历要求
     degree = db.Column(db.String(64), nullable=False)
     # 技术栈
     stacks = db.Column(db.String(128))
+    # 工作地点
     location = db.Column(db.String(24))
     # 全职/兼职
     is_fulltime = db.Column(db.Boolean, default=False)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
-    company = db.relationship('Company', uselist=False, backref='jobs')
+    company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    company = db.relationship('User', uselist=False, backref=db.backref('jobs', lazy='dynamic'))
     # 职位上线
     is_enable = db.Column(db.Boolean, default=True)
 
