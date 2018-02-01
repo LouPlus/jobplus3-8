@@ -17,7 +17,7 @@
             <div class="p_bot">
               <div class="li_b_l">
                 <span class="money">{{ job.salary }}</span>
-                {{ job.address }} / {{ job.exp }} / {{ job.degree }}
+                {{ job.location }} / {{ job.exp }} / {{ job.degree }}
               </div>
             </div>
           </div>
@@ -25,7 +25,7 @@
           <div class="company">
             <div class="company_name">
               <a href="/company/{{ job.company_id }}" target="_blank">
-                {{ job.company.name }}
+                {{ job.company.username }}
               </a>
             </div>
           </div>

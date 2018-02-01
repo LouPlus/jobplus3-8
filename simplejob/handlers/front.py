@@ -80,7 +80,9 @@ def index():
     # 获取参数中传过来的页数
     page = request.args.get('page', default = 1, type = int)
     # 生成分页对象
-    pagination = Job.query.paginate(
+    pagination = Job.query.order_by(
+            db.desc(Job.created_at)
+            ).paginate(
             page = page,
             per_page = current_app.config['INDEX_PER_PAGE'],
             error_out = False
