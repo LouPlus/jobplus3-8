@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template
+from flask import (Flask, render_template)
 
+from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_moment import Moment
+from flask_uploads import (DOCUMENTS, UploadSet, \
+        configure_uploads, patch_request_class)
+from flask_share import Share
 
 from simplejob.config import configs
-from simplejob.models import db, User, Company, Job
+from simplejob.models import (db, User, Company)
+
+
+uploaded_pdfs = UploadSet(
+    name="pdfs",
+    extensions=DOCUMENTS,
+)
 
 
 def register_blueprints(app):
@@ -32,6 +42,14 @@ def register_extensions(app):
     Migrate(app, db)
     
     moment = Moment(app)
+    
+    ckeditor = CKEditor(app)
+
+    configure_uploads(app, uploaded_pdfs)
+    patch_request_class(app,
+            size=app.config["MAX_CONTENT_LENGTH"])
+
+    share = Share(app)
 
     login_manager = LoginManager()
     login_manager.init_app(app)

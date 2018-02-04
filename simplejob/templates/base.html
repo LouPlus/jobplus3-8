@@ -5,9 +5,12 @@
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
         {% block head_css %}
+        {{ ckeditor.load() }}
+        {{ ckeditor.load_code_theme() }}
         {{ moment.include_jquery() }}
         {{ moment.include_moment() }}
         {{ moment.lang('zh-CN')}}
+        {{ share.load() }}
         <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://www.lgstatic.com/www/static/pkg/search-result/page/index/main.html_aio_2_3c98000.css">
         <link rel="stylesheet" href="https://www.lgstatic.com/www/static/pkg/widgets_4e04063.css">
@@ -26,7 +29,6 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="/">SimpleJob</a>
-                    </button>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -59,7 +61,7 @@
                                 </a>
                                 {% if current_user.role == 10 %}
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">个人主页</a></li>
+                                        <li><a href="{{ url_for('user.profile') }}">信息管理</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="{{ url_for('front.logout') }}">退出登录</a></li>
                                     </ul>
@@ -85,6 +87,11 @@
                 </div>
             </div>
         </nav>
+
+        <div class="container-fluid header">
+            {% block head %}{% endblock %}
+        </div>
+
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -101,7 +108,11 @@
 
             {% block body %}{% endblock %}
 
-            {% block footer %}{% endblock %}
+            {% block footer %}
+              <div class="footer">
+                  Copyright &copy; 2014-2018 By SimpleJob
+              </div>
+            {% endblock %}
         </div>
         {% block tail_js %}
         <script src="http://labfile.oss.aliyuncs.com/courses/923/week7/code/jquery/3.2.1/jquery.min.js"></script>

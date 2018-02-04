@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
 
+import os
 import re
+
+from flask import url_for
+
+from flask_ckeditor import CKEditorField
 
 from flask_wtf import FlaskForm
 
-from wtforms import IntegerField
-from wtforms import StringField
-from wtforms import PasswordField
-from wtforms import BooleanField
-from wtforms import TextAreaField
-from wtforms import SubmitField
-from wtforms import ValidationError
-from wtforms import SelectField
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 
-from wtforms.validators import URL
-from wtforms.validators import Length
-from wtforms.validators import EqualTo
-from wtforms.validators import Regexp
-from wtforms.validators import Email
+from wtforms import (BooleanField, IntegerField, \
+        PasswordField, SelectField, StringField, SubmitField, \
+        TextAreaField, ValidationError)
+
+from wtforms.validators import (Email, EqualTo, Regexp, Length, URL)
 from wtforms.validators import DataRequired as Required
 
-from simplejob.models import db
-from simplejob.models import User
-from simplejob.models import Job
+from simplejob.models import (Company, db, Job, User)
+from simplejob.app import uploaded_pdfs
 
 
 class RegisterForm(FlaskForm):
@@ -96,13 +93,17 @@ class UserProfileForm(FlaskForm):
     phone = StringField("手机号",
             validators=[Required(message="请填写内容"), Length(11, 11,
                 message="请确认您输入的手机号"),
-                Regexp("1[3458]\\d{9}", flags=re.I, message="请输入正确的手机号")])
-    resume_url = StringField("简历",
-             validators=[Required(message="请填写内容")])
+                Regexp("1[3458]\\d{9}",
+                    flags=re.I, message="请输入正确的手机号")])
+    resume = FileField("简历上传", validators=[
+                FileAllowed(uploaded_pdfs, "仅限PDF格式！"),
+                FileRequired("文件未选择")])
     submit = SubmitField("提交")
 
     def update_profile(self, user):
         self.populate_obj(user)
+        filename = uploaded_pdfs.save(self.resume.data)
+        user.resume_url = uploaded_pdfs.url(filename)
         db.session.add(user)
         db.session.commit()
 
@@ -118,20 +119,18 @@ class CompanyProfileForm(FlaskForm):
             validators=[Length(6, 24,
                 message="密码长度要在6～24个字符之间")])
     address = StringField("办公地址",
-            validators=[Required(message="请填写内容"), Length(6, 128,
-                message="密码长度要在6～128个字符之间")])
+            validators=[Required(message="请填写内容"), Length(2, 128,
+                message="密码长度要在2～128个字符之间")])
     logo = StringField("公司Logo",
-            validators=[Required(message="请填写内容"), Length(1, 128,
+            validators=[Required(message="请填写内容"), Length(1, 256,
                 message="请确认您输入的Logo")])
     website = StringField("公司网址",
             validators=[Required(message="请填写内容"),
                 URL(message="请确认您输入的网址")])
     description = StringField("公司简介",
-            validators=[Required(message="请填写内容"), Length(12, 128,
-                message="请确认您输入的内容")])
-    company_info = TextAreaField("公司详情",
-            validators=[Required(message="请填写内容"), Length(12, 1024,
-                message="请确认您输入的内容")])
+            validators=[Required(message="请填写内容")])
+    company_info = CKEditorField("公司详情",
+            validators=[Required(message="请填写内容")])
     finance_stage = SelectField("融资阶段",
             choices=[
                 ("未融资", "未融资"),
@@ -193,14 +192,16 @@ class JobForm(FlaskForm):
                 choices=[
                     ("不限", "不限"),
                     ("大专", "大专"),
-                    ("本科", "本科"),
+                    ("本科及以上", "本科及以上"),
                     ("硕士", "硕士"),
                     ("博士", "博士"),
                     ]
                 )
     is_fulltime = BooleanField("全职") 
-    treatment = TextAreaField("职位诱惑", validators=[Length(0, 1500)])
-    description = TextAreaField("职位描述", validators=[Length(0, 1500)])
+    treatment = TextAreaField("职位诱惑",
+            validators=[Length(0, 1500)])
+    description = CKEditorField("职位描述",
+            validators=[Required(message="请填写内容")])
     submit = SubmitField("发布")
 
     def create_job(self, company):

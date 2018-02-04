@@ -1,5 +1,9 @@
-{% macro render_form(form, url) %}
+{% macro render_form(form, url, upload_file=False) %}
+{% if not upload_file %}
 <form method="POST" action="{{ url }}">
+{% else %}
+<form method="POST" enctype="multipart/form-data" action="{{ url }}">
+{% endif %}
     {{ form.csrf_token }}
     {% for field in form %}
         {% if field.type == "CSRFTokenField" %}
@@ -57,13 +61,17 @@
 {% macro render_company(company) %}
 <div class="col-sm-6 col-md-3 company-item">
   <div class="thumbnail">
-      <a href="/company/detail/{{ company.id }}">
+      <a href="{{ url_for('company.detail', company_id=company.id) }}">
         <img src="{{ company.detail.logo }}" width="100" height="100" alt="{{ company.detail.name }}">
       </a>
-      <h3>{{ company.detail.name }}</h3>
-      <p>{{ company.detail.field }}</p>
+      <h4>{{ company.detail.name }}</h4>
+      <p>{{ company.detail.field }} / {{ company.detail.finance_stage }}<br/>
+         {{ company.detail.description | truncate(12, True) }}</p>
   <hr>
-  <p>在招职位：</p>
+  <a href="{{ url_for('company.company_jobs', company_id=company.id) }}">
+      <p>
+         {{ company.is_enable_jobs.count() }}<br/>在招职位
+      </p>
   </div>
 </div>
 {% endmacro %}
@@ -73,8 +81,11 @@
 <div class="col-sm-6 col-md-4">
   <div class="job-box">
       <div class="caption">
-        <b>{{ job.name }}</b>
-        <p>经验：{{ job.exp }} {% if job.exp != '不限' %}年{% endif %} 学历：{{ job.degree }}</p>
+        <a href="{{ url_for('job.detail', job_id=job.id) }}">
+        <b>{{ job.name }}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </a>
+        <b>{{ job.salary_low }}k-{{ job.salary_high }}k</b><br/>
+        <span>经验{{ job.exp }} / {{ job.degree }}</span><br/>
         {% for tag in job.tag_list %}
         <span class="label label-default">{{ tag }}</span>
         {% endfor %}
@@ -82,12 +93,15 @@
       <hr>
       <div class="media">
         <div class="media-left">
-          <a href="/job/{{ job.id }}">
-            <img class="media-object" src="{{ job.company.logo }}" width="40" height="40" alt="job.company.name">
+          <a href="{{ url_for('company.detail', company_id=job.company.id) }}">
+            <img class="media-object" src="{{ job.company.detail.logo }}" width="40" height="40" alt="job.company.detail.name">
           </a>
         </div>
-        <div class="media-body"><h4 class="media-heading">{{ job.company.name }}</h4>
-          <span class="company-meta">{{ job.company.field }}/{{ job.company.finance_stage }}/{{ job.company.address }}</span>
+        <div class="media-body">
+          <a href="{{ url_for('company.detail', company_id=job.company.id) }}">
+          <h4 class="media-heading">{{ job.company.detail.name }}</h4>
+          </a>
+          <span class="company-meta">{{ job.company.detail.field }}/{{ job.company.detail.finance_stage }}/{{ job.location }}</span>
           </div>
         </div>
     </div>

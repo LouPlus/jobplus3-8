@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% from "macros.html" import render_form %}
 
+{% block title %}
+用户信息编辑
+{% endblock %}
+
 {% block body %}
 <h4>编辑用户</h4>
-{{ render_form(form, url_for('user.profile')) }}
-{{ dropzone.create(action_view='user.upload') }}
+{{ render_form(form, url_for('user.profile'), upload_file='yes') }}
 {% endblock %}
