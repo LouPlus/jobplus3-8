@@ -38,14 +38,14 @@
         {% for job in company.is_enable_jobs %}
         <div class="job-item">
           <a href="{{ url_for('job.detail', job_id=job.id) }}">
-            <h4>{{ job.name }}</h4>
+            <h4>{{ job.name }} [{{ job.location }}]</h4>
             <p>
               <span class="job-salary">
                 {{ job.salary_low }}k-{{ job.salary_high }}k
               </span>
               &nbsp;
               <span class="job-meta">
-                经验{{ job.exp }}/{{ job.degree }}/{% if job.is_fulltime %}全职{% else %}兼职{% endif %}
+                  {{ job.exp }} / {{ job.degree }} / {% if job.is_fulltime %}全职{% else %}兼职{% endif %}
               </span>
             </p>
           </a>
@@ -58,6 +58,12 @@
   <h4><b>公司基本信息</b></h4>
   <p>领域：{{ company.detail.field }}</p>
   <p>融资：{{ company.detail.finance_stage }}</p>
-  <p>城市：{{ company.detail.address }}</p>
+  <p>城市：{{ company.detail.address | truncate(5, True) }}</p>
+  <h4><b>公司标签</b></h4>
+  <ul class="item_con_ul">
+  {% for tag in company.detail.tag_list %}
+  <li class="con_ul_li"><a>{{ tag }}</a></li>
+  {% endfor %}
+  </ul>
 </div>
 {% endblock %}

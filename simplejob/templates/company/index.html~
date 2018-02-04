@@ -5,7 +5,7 @@
 
 {% block body %}
 <div class="jumbotron">
-    <span>公司过滤：</span>
+    <span>公司过滤</span>
     <a href="{{ url_for('company.index') }}" class="active">全部</a>
     {% for company in cpagination %}
     <a href="{{ url_for('company.cfilter', status=company) }}">

@@ -20,8 +20,23 @@ def index():
                 per_page=current_app.config["INDEX_PER_PAGE"],
                 error_out=False
             )
+    jpagination = ["应届毕业生", "3年及以下", "3-5年", "5-10年", "10年以上", "不限"]
     return render_template("job/index.html", pagination=pagination,
-            active="job")
+            jpagination=jpagination, active="job")
+
+@job.route("/filter")
+def jfilter():
+    status = request.args.get("status", "all")
+    page = request.args.get("page", default=1, type=int)
+    job_filter = Job.query.filter(Job.exp==status)
+    pagination = job_filter.order_by(Job.created_at.desc()).paginate(
+                page=page,
+                per_page=3,
+                error_out=False
+            )
+    jpagination = ["应届毕业生", "3年及以下", "3-5年", "5-10年", "10年以上", "不限"]
+    return render_template("job/filter.html",
+            pagination=pagination, jpagination=jpagination)
 
 
 @job.route("/<int:job_id>")

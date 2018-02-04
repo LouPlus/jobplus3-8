@@ -6,7 +6,7 @@ import os
 class BaseConfig(object):
     SECRET_KEY = str(os.urandom(24))
     ADMIN_PER_PAGE = 15
-    INDEX_PER_PAGE = 4
+    INDEX_PER_PAGE = 12
 
     
 class DevelopmentConfig(BaseConfig):

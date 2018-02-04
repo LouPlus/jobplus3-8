@@ -127,6 +127,7 @@ class CompanyProfileForm(FlaskForm):
     website = StringField("公司网址",
             validators=[Required(message="请填写内容"),
                 URL(message="请确认您输入的网址")])
+    tags = StringField("职位标签(用逗号区隔)")
     description = StringField("公司简介",
             validators=[Required(message="请填写内容")])
     company_info = CKEditorField("公司详情",

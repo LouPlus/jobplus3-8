@@ -4,6 +4,24 @@ span {
   color: #999;
 }
 
+.item_con_ul {
+    color: #777;
+    font-size: 12px;
+}
+
+.con_ul_li {
+    display: block;
+    float: left;
+    height: 25px;
+    padding: 0 10px;
+    margin: 0 10px 10px 0;
+    border: 1px solid #ededed;
+    border-radius: 15px;
+    background-color: #fff;
+    line-height: 25px;
+    text-align: center;
+}
+
 ul.item_con_list {
   width: 700px;
   margin: 0 auto

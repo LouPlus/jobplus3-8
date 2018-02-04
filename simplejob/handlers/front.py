@@ -77,7 +77,7 @@ def login():
 @front.route("/")
 def index():
     newest_jobs = Job.query.filter(Job.is_enable.is_(True)
-            ).order_by(Job.created_at.desc()).limit(3)
+            ).order_by(Job.created_at.desc()).limit(9)
     newest_companies = User.query.filter(
         User.role==User.ROLE_COMPANY,
     ).order_by(User.created_at.desc()).limit(8)

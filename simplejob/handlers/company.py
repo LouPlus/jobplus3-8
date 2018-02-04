@@ -5,7 +5,7 @@ from flask import (abort, Blueprint, current_app, flash, \
 
 from flask_login import (current_user, login_required)
 
-from simplejob.models import (db, Delivery, Job, User)
+from simplejob.models import (Company, db, Delivery, Job, User)
 from simplejob.forms import (CompanyProfileForm, JobForm)
 
 
@@ -14,6 +14,7 @@ company = Blueprint("company", __name__, url_prefix="/company")
 
 @company.route("/")
 def index():
+    status = request.args.get("cfilter", "all")
     page = request.args.get("page", default=1, type=int)
     pagination = User.query.filter(
             User.role == User.ROLE_COMPANY
@@ -23,8 +24,26 @@ def index():
                     per_page=current_app.config["INDEX_PER_PAGE"],
                     error_out=False
                     )
+    cpagination = ["移动互联网", "电子商务", "金融", 
+            "企业服务", "教育", "文化娱乐", "游戏", "O2O", "硬件"]
     return render_template("company/index.html",
-            pagination=pagination, active="company")
+            pagination=pagination, cpagination=cpagination)
+
+
+@company.route("/filter")
+def cfilter():
+    status = request.args.get("status", "all")
+    page = request.args.get("page", default=1, type=int)
+    job_filter = Company.query.filter(Company.field==status)
+    pagination = job_filter.order_by(Company.created_at.desc()).paginate(
+                page=page,
+                per_page=3,
+                error_out=False
+            )
+    cpagination = ["移动互联网", "电子商务", "金融", 
+            "企业服务", "教育", "文化娱乐", "游戏", "O2O", "硬件"]
+    return render_template("company/filter.html",
+            pagination=pagination, cpagination=cpagination)
 
 
 @company.route("/detail/<int:company_id>")
