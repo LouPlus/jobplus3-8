@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint
-from flask import flash
-from flask import url_for
-from flask import request
-from flask import current_app
-from flask import redirect
-from flask import render_template
+from flask import (Blueprint, current_app, flash, request, \
+        redirect, render_template, url_for)
 
 from flask_login import login_user
 
-from simplejob.models import db
-from simplejob.models import User
-from simplejob.models import Job
-from simplejob.forms import RegisterForm
-from simplejob.forms import LoginForm
-from simplejob.forms import UserProfileForm
-from simplejob.forms import CompanyProfileForm
+from simplejob.models import (db, Job, User)
+
+from simplejob.forms import (CompanyProfileForm, LoginForm, \
+        RegisterForm, UserProfileForm)
+
 from simplejob.decorators import admin_required
 
 
 admin = Blueprint("admin", __name__, url_prefix="/admin")
+
+
+@admin.route("/")
+@admin_required
+def index():
+    return render_template("admin/admin_base.html")
 
 
 @admin.route("/users")

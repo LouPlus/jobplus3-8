@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+
+from werkzeug.security import (generate_password_hash, check_password_hash)
+
 from flask import url_for
-from flask_login import UserMixin
+
+from flask_login import (current_user, UserMixin)
 
 
 db = SQLAlchemy()
@@ -92,7 +96,7 @@ class Company(Base):
     user = db.relationship("User", uselist=False, backref=db.backref("company_detail", uselist=False))
     website = db.Column(db.String(64), nullable=True)
     address = db.Column(db.String(64), nullable=True)
-    logo = db.Column(db.String(128))
+    logo = db.Column(db.String(256))
     # 融资进度
     finance_stage = db.Column(db.String(128))
     # 公司领域
@@ -144,6 +148,8 @@ class Job(Base):
     location = db.Column(db.String(24))
     # 全职/兼职
     is_fulltime = db.Column(db.Boolean, default=False)
+    # 工作标签
+    tags = db.Column(db.String(128))
     company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     company = db.relationship('User', uselist=False, backref=db.backref('jobs', lazy='dynamic'))
     # 职位上线
@@ -160,3 +166,36 @@ class Job(Base):
     @property
     def stack_list(self):
         return self.stacks.split(",")
+
+    @property
+    def tag_list(self):
+        return self.tags.split(",")
+
+    @property
+    def current_user_is_applied(self):
+        delivery = Delivery.query.filter_by(job_id=self.id,
+                user_id=current_user.id).first()
+        return (delivery is not None)
+
+
+class Delivery(Base):
+    __tablename__ = 'delivery'
+
+    STATUS_WAITTING = 1
+    STATUS_REJECT = 2
+    STATUS_ACCEPT = 3
+
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='SET NULL'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
+    company_id = db.Column(db.Integer)
+    status = db.Column(db.SmallInteger, default=STATUS_WAITTING)
+    company_response = db.Column(db.String(256))
+
+    @property
+    def user(self):
+        return User.query.get(self.user_id)
+
+    @property
+    def job(self):
+        return Job.query.get(self.job_id)

@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from flask import (flash, Blueprint, url_for,
-        redirect, render_template, request, current_app)
+from datetime import datetime
 
-from flask_login import (login_user, logout_user,
+from flask import (Blueprint, current_app, flash, \
+        redirect, render_template, request, url_for)
+
+from flask_login import (login_user, logout_user, \
         login_required)
 
-from simplejob.models import db
-from simplejob.models import User
-from simplejob.models import Job
-from simplejob.models import Company
-from simplejob.forms import LoginForm
-from simplejob.forms import RegisterForm
+from simplejob.models import (Company, db, User, Job)
 
-from datetime import datetime
+from simplejob.forms import (RegisterForm, LoginForm)
+
 
 front = Blueprint("front", __name__)
 
@@ -29,7 +27,7 @@ def userregister():
         flash("注册成功，请登录！", "success")
         return redirect(url_for(".login"))
     return render_template("user/register.html", form=form,
-            active = 'userregister')
+            active="userregister")
 
 
 @front.route("/companyregister", methods=["GET", "POST"])
@@ -47,7 +45,7 @@ def companyregister():
         flash("注册成功，请登录！", "success")
         return redirect(url_for(".login"))
     return render_template("company/register.html", form=form,
-            active = 'companyregister')
+            active="companyregister")
 
 
 @front.route("/login", methods=["GET", "POST"])
@@ -67,28 +65,27 @@ def login():
             if user.is_admin:
                 next = "admin.users"
             elif user.is_company:
-                return redirect(url_for('company.job_manage', company_id = user.id))
+                return redirect(url_for("company.job_manage",
+                        company_id=user.id))
             elif user.is_jobhunter:
                 next = "user.profile"
             return redirect(url_for(next))
     return render_template("login.html", form=form,
-            active = 'login')
+            active="login")
 
 
 @front.route("/")
 def index():
-    # 获取参数中传过来的页数
-    page = request.args.get('page', default = 1, type = int)
-    # 生成分页对象
-    pagination = Job.query.order_by(
-            db.desc(Job.created_at)
-            ).paginate(
-            page = page,
-            per_page = current_app.config['INDEX_PER_PAGE'],
-            error_out = False
-            )
-    return render_template('index.html', pagination = pagination,
-            current_time = datetime.utcnow(), active = 'index')
+    newest_jobs = Job.query.filter(Job.is_enable.is_(True)
+            ).order_by(Job.created_at.desc()).limit(9)
+    newest_companies = User.query.filter(
+        User.role==User.ROLE_COMPANY,
+    ).order_by(User.created_at.desc()).limit(8)
+    return render_template("index.html", 
+        active="index",
+        newest_jobs=newest_jobs,
+        newest_companies=newest_companies
+    )
 
 
 @front.route("/logout")

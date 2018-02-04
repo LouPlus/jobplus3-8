@@ -16,6 +16,7 @@
       <h2>{{ company.detail.name }}</h2>
       <p>{{ company.detail.description }}</p>
       <a href="{{ company.detail.website }}">{{ company.detail.website }}</a>
+      {{ share.create(title='分享：', sites='weibo,douban,qq', mobile_sites='weibo,douban,qq') }}
     </div>
   </div>
 </div>
@@ -24,32 +25,45 @@
 {% block body %}
 <div class="col-md-8">
   <ul class="nav nav-tabs">
-      <li role="presentation" class="{% if panel == 'about' %}active{% endif %}"><a href="{{ url_for('company.detail', company_id=company.id) }}">公司介绍</a></li>
-      <li role="presentation" class="{% if panel == 'job' %}active{% endif %}"><a href="{{ url_for('company.company_jobs', company_id=company.id) }}">在招职位()</a></li>
+      <li role="presentation" class="{% if panel == 'about' %}active{% endif %}"><a href="{{ url_for('company.detail', company_id=company.id) }}">公司主页</a></li>
+      <li role="presentation" class="{% if panel == 'job' %}active{% endif %}"><a href="{{ url_for('company.company_jobs', company_id=company.id) }}">在招职位( {{ company.is_enable_jobs.count() }} )</a></li>
   </ul>
     <div class="company-detail">
       {% if panel == 'about' %}
-      {{ company.detail.company_info }}
+        <h3><b>公司介绍</b></h3><br/>
+        {{ company.detail.company_info | safe }}
+        <h3><b>公司地址</b></h3><br/>
+        {{ company.detail.address }}
       {% else %}
-      {% for job in company.enable_jobs %}
-      <div class="job-item">
-        <a href="{{ url_for('job.detail', job_id=job.id) }}">
-        <h4>{{ job.name }}</h4>
-        <p>
-          <span class="job-salary">{{ job.salary_low }}-{{ job.salary_high }}</span>
-          &nbsp;
-          <span class="job-meta">经验{{ job.exp }}{% if not job.exp == '不限' %}年{% endif %}/{{ job.degree }}</span>
-          </p>
-        </a>
-      </div>
-      {% endfor %}
+        {% for job in company.is_enable_jobs %}
+        <div class="job-item">
+          <a href="{{ url_for('job.detail', job_id=job.id) }}">
+            <h4>{{ job.name }} [{{ job.location }}]</h4>
+            <p>
+              <span class="job-salary">
+                {{ job.salary_low }}k-{{ job.salary_high }}k
+              </span>
+              &nbsp;
+              <span class="job-meta">
+                  {{ job.exp }} / {{ job.degree }} / {% if job.is_fulltime %}全职{% else %}兼职{% endif %}
+              </span>
+            </p>
+          </a>
+        </div>
+        {% endfor %} 
       {% endif %}
     </div>
 </div>
 <div class="col-md-4">
-  <h4>公司基本信息</h4>
+  <h4><b>公司基本信息</b></h4>
   <p>领域：{{ company.detail.field }}</p>
   <p>融资：{{ company.detail.finance_stage }}</p>
-  <p>城市：{{ company.detail.location }}</p>
+  <p>城市：{{ company.detail.address | truncate(5, True) }}</p>
+  <h4><b>公司标签</b></h4>
+  <ul class="item_con_ul">
+  {% for tag in company.detail.tag_list %}
+  <li class="con_ul_li"><a>{{ tag }}</a></li>
+  {% endfor %}
+  </ul>
 </div>
 {% endblock %}

@@ -1,41 +1,51 @@
 {% extends "base.html" %}
-{% from "macros.html" import render_pagination %}
+{% from "macros.html" import render_company, render_job %}
+
 {% block title %}主页{% endblock %}
 
+{% block head %}
+<div class="jumbotron">
+  <div class="container">
+    <h1>SimpleJob</h1>
+    <p>领先的互联网求职、招聘平台</p>
+  </div>
+</div>
+{% endblock %}
+
 {% block body %}
-<div class="s_position_list" id="s_position_list">
-  {% for job in pagination.items %}
-    <ul class="item_con_list">
-      <li class="con_list_item default_list">
-        <div class="list_item_top">
-          <div class="position">
-            <div class="p_top">
-              <a class="position_link" href="/job/{{ job.id }}" target = "_blank">
-                <h3 style="max-width: 180px;">{{ job.name }}</h3>
-              </a>
-            </div>
-            <div class="p_bot">
-              <div class="li_b_l">
-                <span class="money">{{ job.salary }}</span>
-                {{ job.location }} / {{ job.exp }} / {{ job.degree }}
-              </div>
-            </div>
-          </div>
-          <span class="format_time">{{ moment(job.created_at).fromNow(refresh=True) }}</span>
-          <div class="company">
-            <div class="company_name">
-              <a href="/company/{{ job.company_id }}" target="_blank">
-                {{ job.company.username }}
-              </a>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
+<ul class="nav nav-tabs list-title">
+  <li role="presentation" class="active">
+    <a href="#">最新职位</a>
+  </li>
+</ul>
+
+<div class="job-list">
+  {% for job in newest_jobs %}
+    {{ render_job(job) }}
   {% endfor %}
 </div>
 
 <p class="list-more">
-<a href="{{ url_for('job.index') }}" class="btn btn-success btn-lg list-more-btn">查看更多</a>
+  <a href="{{ url_for('job.index') }}" class="btn btn-success btn-lg list-more-btn">
+    查看更多
+  </a>
+</p>
+
+<ul class="nav nav-tabs list-title">
+  <li role="presentation" class="active">
+    <a href="#">最新公司</a>
+  </li>
+</ul>
+
+<div class="company-list">
+  {% for company in newest_companies %}
+    {{ render_company(company) }}
+  {% endfor %}
+</div>
+
+<p class="list-more">
+  <a href="{{ url_for('company.index') }}" class="btn btn-success btn-lg list-more-btn">
+    查看更多
+  </a>
 </p>
 {% endblock %}

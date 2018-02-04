@@ -1,12 +1,7 @@
 {% extends "company/company_base.html" %}
-{% from "macros.html" import render_pagination %}
 
 {% block title %}
 企业在招岗位管理
-{% endblock %}
-
-{% block manage %}
-<a href="{{ url_for('company.job_manage', company_id=company_id) }}" class="list-group-item">职位管理</a>
 {% endblock %}
 
 {% block operation %}
@@ -27,14 +22,20 @@
       <tr>
         <td>{{ job.id }}</td>
         <td>{{ job.name }}</td>
+        <td>{{ job.company.name }}</td>
         <td>{{ job.created_at }}</td>
         <td>
             <div class="btn-group" role="group">
+              {% if job.is_enable %}
+              <a href="{{ url_for('job.disable_job', job_id=job.id) }}" type="button" class="btn btn-default">下线</a>
+              {% else %}
+              <a href="{{ url_for('job.enable_job', job_id=job.id) }}" type="button" class="btn btn-default">上线</a>
+              {% endif %}
               <a href="{{ url_for('company.edit_job', company_id=company_id, job_id=job.id) }}" type="button" class="btn btn-default" title="编辑">
-                <span class="glyphicom glyphicon-pencil" title="编辑" aria-hidden="true">编辑</span>
+                  编辑
               </a>
               <a href="{{ url_for('company.delete_job', company_id=company_id, job_id=job.id) }}" type="button" class="btn btn-default" title="删除">
-                <span class="glyphicom glyphicon-trash" title="删除" aria-hidden="true">删除</span>
+                  删除
               </a>
             </div>
         </td>
@@ -43,6 +44,4 @@
     </tbody>
   </thead>
 </table>
-
-{{ render_pagination(pagination, 'company.jobs_manage') }}
 {% endblock %}
