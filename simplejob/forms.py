@@ -74,10 +74,12 @@ class LoginForm(FlaskForm):
     def validate_password(self, field):
         if User.query.filter_by(email=self.email.data).first():
             user = User.query.filter_by(email=self.email.data).first()
+            if user and not user.check_password(field.data):
+                raise ValidationError("密码错误")
         elif Company.query.filter_by(email=self.email.data).first():
             user = Company.query.filter_by(email=self.email.data).first()
-        if user and not user.check_password(field.data):
-            raise ValidationError("密码错误")
+            if user and not user.check_password(field.data):
+                raise ValidationError("密码错误")
 
 
 class UserProfileForm(FlaskForm):
@@ -173,10 +175,12 @@ class CompanyProfileForm(FlaskForm):
 
 
 class JobForm(FlaskForm):
-    name = StringField("职位名称")
+    name = StringField("职位名称",
+            validators=[Required(message="请填写内容"), Length(1, 24)])
     salary_low = IntegerField("最低薪水")
     salary_high = IntegerField("最高薪水")
-    location = StringField("工作地点")
+    location = StringField("工作地点",
+            validators=[Required(message="请填写内容"), Length(1, 36)])
     tags = StringField("职位标签(用逗号区隔)")
     stacks = StringField("技术栈标签(用逗号区隔)")
     exp = SelectField("工作年限",

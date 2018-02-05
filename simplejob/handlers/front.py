@@ -56,6 +56,9 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
         elif Company.query.filter_by(email=form.email.data).first():
             user = Company.query.filter_by(email=form.email.data).first()
+        else:
+            flash("该用户不存在，请核对信息后再登录", "error")
+            return redirect(url_for(".login"))
         if not user.is_enable:
             flash("该用户已被管理员禁用", "error")
             return redirect(url_for(".login"))

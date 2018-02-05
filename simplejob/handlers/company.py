@@ -37,7 +37,7 @@ def cfilter():
     job_filter = Company.query.filter(Company.field==status)
     pagination = job_filter.order_by(Company.created_at.desc()).paginate(
                 page=page,
-                per_page=3,
+                per_page=current_app.config["INDEX_PER_PAGE"],
                 error_out=False
             )
     cpagination = ["移动互联网", "电子商务", "金融", 

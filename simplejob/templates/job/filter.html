@@ -5,13 +5,15 @@
 
 {% block body %}
 <div class="jumbotron">
-    <span>职位过滤：</span>
+    <span class="filter">职位过滤：</span>
+    <li style="list-style: none;float: left;margin-right: 5px;padding: 5px 8px;line-height: 14px;height: 14px;">
     <a href="{{ url_for('job.index') }}">全部</a>
     {% for job in jpagination %}
     <a href="{{ url_for('job.jfilter', status=job) }}">
         {{ job }}
     </a>
     {% endfor%}
+    </li>
 </div>
 
 <div class="job_list">
