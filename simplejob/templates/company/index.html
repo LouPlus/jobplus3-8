@@ -5,13 +5,15 @@
 
 {% block body %}
 <div class="jumbotron">
-    <span>公司过滤：</span>
+    <span class="filter">公司过滤：</span>
+    <li style="list-style: none;float: left;margin-right: 5px;padding: 5px 8px;line-height: 14px;height: 14px;">
     <a href="{{ url_for('company.index') }}" class="active">全部</a>
     {% for company in cpagination %}
     <a href="{{ url_for('company.cfilter', status=company) }}">
       {{ company }}
     </a>
     {% endfor%}
+    </li>
 </div>
 
 <div class="company-list">

@@ -31,7 +31,7 @@ def jfilter():
     job_filter = Job.query.filter(Job.exp==status)
     pagination = job_filter.order_by(Job.created_at.desc()).paginate(
                 page=page,
-                per_page=3,
+                per_page=current_app.config["INDEX_PER_PAGE"],
                 error_out=False
             )
     jpagination = ["应届毕业生", "3年及以下", "3-5年", "5-10年", "10年以上", "不限"]

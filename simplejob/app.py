@@ -6,7 +6,7 @@ from flask_ckeditor import CKEditor
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_moment import Moment
-from flask_uploads import (DOCUMENTS, UploadSet, \
+from flask_uploads import (UploadSet, \
         configure_uploads, patch_request_class)
 from flask_share import Share
 
@@ -16,7 +16,7 @@ from simplejob.models import (db, User, Company)
 
 uploaded_pdfs = UploadSet(
     name="pdfs",
-    extensions=DOCUMENTS,
+    extensions=tuple("pdf".split()),
 )
 
 
